@@ -26,9 +26,21 @@ public class UsrArticleController {
 
 	@RequestMapping("/usr/article/list")
 	@ResponseBody
-	public List<Article> showList() {
+	public List<Article> showList(String searchKeywordType, String searchKeyword) {
+		if(searchKeywordType != null) {
+			searchKeywordType = searchKeywordType.trim();
+		}
+		if(searchKeywordType == null || searchKeywordType.length() == 0) {
+			searchKeywordType = "titleAndBody";
+		}
+		if(searchKeyword != null && searchKeyword.length() == 0) {
+			searchKeyword = null;
+		}
+		if(searchKeyword != null) {
+			searchKeyword = searchKeyword.trim();
+		}
 
-		return articleService.getArticles();
+		return articleService.getArticles(searchKeywordType,searchKeyword);
 	}
 
 	// 게시물 추가
@@ -38,11 +50,7 @@ public class UsrArticleController {
 		if (title == null && body == null) {
 			return new ResultData("F-2", "title 또는 body가 입력되지 않았습니다.");
 		}
-
-		// return Util.mapOf("resultCode", "S-1", "msg", "추가되었습니다.", "id",
-		// articlesLastId);
-		// return new ResultData("S-1", "완료되었습니다.", "id", articlesLastId);
-		ResultData rsData = articleService.add(title, body);
+		ResultData rsData = articleService.addArticle(title, body);
 
 		return rsData;
 	}
@@ -51,17 +59,7 @@ public class UsrArticleController {
 	@RequestMapping("/usr/article/doDelete")
 	@ResponseBody
 	public ResultData doDelete(Integer id) {
-		/*
-		 * boolean deleteArticleRs = deleteArticle(id); if (deleteArticleRs == false) {
-		 * //return Util.mapOf("resultCode", "F", "msg", "해당 게시물이 존재하지 않습니다.", "id",
-		 * id); return new ResultData("F-1","해당 게시물이 존재하지 않습니다."); } //return
-		 * Util.mapOf("resultCode", "S", "msg", "삭제되었습니다.", "id", id); return new
-		 * ResultData("S-1","완료되었습니다.", "id", id); }
-		 * 
-		 * private boolean deleteArticle(int id) { for (Article article : articles) { if
-		 * (article.getId() == id) { articles.remove(article); return true; } } return
-		 * false;
-		 */
+
 		if (id == null) {
 			return new ResultData("F-2", "id를 입력해주세요.");
 		}
@@ -77,23 +75,6 @@ public class UsrArticleController {
 	@RequestMapping("/usr/article/doModify")
 	@ResponseBody
 	public ResultData doModify(Integer id, String title, String body) {
-		/*
-		 * Article selArticle = null;
-		 * 
-		 * for (Article article : articles) { if (article.getId() == id) { selArticle =
-		 * article; break; } }
-		 * 
-		 * if (selArticle == null) { //return Util.mapOf("resultCode", "F", "msg",
-		 * String.format("%d번 게시물이 존재하지 않습니다", id)); return new ResultData("F-1", "msg",
-		 * String.format("%d번 게시물이 존재하지 않습니다", id)); }
-		 * 
-		 * selArticle.setUpdateDate(Util.getNowDate()); selArticle.setTitle(title);
-		 * selArticle.setBody(body);
-		 * 
-		 * //return Util.mapOf("resultCode", "S", "msg",
-		 * String.format("%d번 게시물이 수정되었습니다", id)); return new ResultData("S-2", "msg",
-		 * String.format("%d번 게시물이 수정되었습니다.", id));
-		 */
 		
 		if (id == null) {
 			return new ResultData("F-2", "id를 입력해주세요.");
@@ -101,7 +82,7 @@ public class UsrArticleController {
 		if (title == null && body == null) {
 			return new ResultData("F-2", "title 또는 body가 입력되지 않았습니다.");
 		}
-		
+
 		Article article = articleService.getArticle(id);
 		if (article == null) {
 			return new ResultData("F-1", "해당 게시물이 존재하지 않습니다.");
