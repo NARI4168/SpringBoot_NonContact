@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.NonContact.dao.ArticleDao">
+
+	<!-- public Article getArticle(@Param(value = "id") int id); -->
+	<select id="getArticle" resultType="Article">
+		SELECT *
+		FROM article
+		WHERE id
+		= #{id}
+	</select>
+
+
+	<!-- public List<Article> getArticles(@Param(value = "searchKeywordType") 
+		String searchKeywordType, @Param(value = "searchKeyword") String searchKeyword); -->
+	<select id="getArticles" resultType="Article">
+		SELECT *
+		FROM article
+		WHERE 1 <!-- True -->
+		<if test="searchKeywordType == 'title'"> AND title LIKE CONCAT('%',
+			#{searchKeyword}, '%') </if>
+		<if test="searchKeywordType == 'body'"> AND
+			`body` LIKE CONCAT('%', #{searchKeyword}, '%') </if>
+		<if test="searchKeywordType 
+			== 'titleAndBody'"> AND (title LIKE CONCAT('%', #{searchKeyword}, '%') OR
+			`body` LIKE CONCAT('%', #{searchKeyword}, '%')) </if>
+		ORDER BY id DESC
+	</select>
+
+
+	<!-- public void addArticle(@Param(value = "title") String title, @Param(value 
+		= "body") String body); -->
+	<insert id="addArticle" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO article
+		SET regDate = NOW(),
+		updateDate =
+		NOW(),
+		title =
+		#{title},
+		`body` = #{body}
+	</insert>
+
+
+	<!-- public void deleteArticle(@Param(value = "id") int id); -->
+	<delete id="deleteArticle">
+		DELETE FROM article
+		WHERE id = #{id}
+	</delete>
+
+
+	<!-- public void modifyArticle(@Param(value = "id") int id, @Param(value 
+		= "body") String body, @Param(value = "title") String title); -->
+	<update id="modifyArticle">
+		UPDATE article
+		<set>
+			<if test="title != null || body != null">
+				updateDate = NOW(),
+			</if>
+			<if test="title != null">
+				title = #{title},
+			</if>
+			<if test="body != null">
+				`body` = #{body}
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+
+</mapper>

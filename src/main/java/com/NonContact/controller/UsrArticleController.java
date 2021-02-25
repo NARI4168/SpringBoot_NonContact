@@ -1,10 +1,12 @@
 package com.NonContact.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.NonContact.dto.Article;
@@ -39,6 +41,9 @@ public class UsrArticleController {
 		if(searchKeyword != null) {
 			searchKeyword = searchKeyword.trim();
 		}
+		if(searchKeyword == null) {
+			searchKeywordType = null;
+		}
 
 		return articleService.getArticles(searchKeywordType,searchKeyword);
 	}
@@ -46,11 +51,11 @@ public class UsrArticleController {
 	// 게시물 추가
 	@RequestMapping("/usr/article/doAdd")
 	@ResponseBody
-	public ResultData doAdd(String title, String body) {
-		if (title == null && body == null) {
+	public ResultData doAdd(@RequestParam Map<String, Object>param) {
+		if (param.get("title") == null && param.get("body") == null) {
 			return new ResultData("F-2", "title 또는 body가 입력되지 않았습니다.");
 		}
-		ResultData rsData = articleService.addArticle(title, body);
+		ResultData rsData = articleService.addArticle(param);
 
 		return rsData;
 	}
