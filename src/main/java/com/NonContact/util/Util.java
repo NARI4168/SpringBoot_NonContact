@@ -45,7 +45,7 @@ public class Util {
 		return map;
 	}
 	
-	
+	//id 증가함수
 	public static int getAsInt(Object object, int defaultValue) {
 		if (object instanceof BigInteger) {
 			return ((BigInteger) object).intValue();

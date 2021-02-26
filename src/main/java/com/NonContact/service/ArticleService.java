@@ -27,13 +27,13 @@ public class ArticleService {
 
 	}
 
-	//public ResultData addArticle(String title, String body) {
-		//articleDao.addArticle(title, body);
-	public ResultData addArticle(Map<String, Object>param) {
+	// public ResultData addArticle(String title, String body) {
+	// articleDao.addArticle(title, body);
+	public ResultData addArticle(Map<String, Object> param) {
 		articleDao.addArticle(param);
-		
-		int id = Util.getAsInt(param.get("id"),0);
-		
+
+		int id = Util.getAsInt(param.get("id"), 0);
+
 		return new ResultData("S-1", "추가되었습니다.", "id", id);
 
 	}
@@ -41,7 +41,7 @@ public class ArticleService {
 	public ResultData deleteArticle(int id) {
 
 		articleDao.deleteArticle(id);
-		
+
 		return new ResultData("S-1", "삭제되었습니다.", "id", id);
 	}
 

@@ -29,29 +29,29 @@ public class UsrArticleController {
 	@RequestMapping("/usr/article/list")
 	@ResponseBody
 	public List<Article> showList(String searchKeywordType, String searchKeyword) {
-		if(searchKeywordType != null) {
+		if (searchKeywordType != null) {
 			searchKeywordType = searchKeywordType.trim();
 		}
-		if(searchKeywordType == null || searchKeywordType.length() == 0) {
+		if (searchKeywordType == null || searchKeywordType.length() == 0) {
 			searchKeywordType = "titleAndBody";
 		}
-		if(searchKeyword != null && searchKeyword.length() == 0) {
+		if (searchKeyword != null && searchKeyword.length() == 0) {
 			searchKeyword = null;
 		}
-		if(searchKeyword != null) {
+		if (searchKeyword != null) {
 			searchKeyword = searchKeyword.trim();
 		}
-		if(searchKeyword == null) {
+		if (searchKeyword == null) {
 			searchKeywordType = null;
 		}
 
-		return articleService.getArticles(searchKeywordType,searchKeyword);
+		return articleService.getArticles(searchKeywordType, searchKeyword);
 	}
 
 	// 게시물 추가
 	@RequestMapping("/usr/article/doAdd")
 	@ResponseBody
-	public ResultData doAdd(@RequestParam Map<String, Object>param) {
+	public ResultData doAdd(@RequestParam Map<String, Object> param) {
 		if (param.get("title") == null && param.get("body") == null) {
 			return new ResultData("F-2", "title 또는 body가 입력되지 않았습니다.");
 		}
@@ -80,7 +80,7 @@ public class UsrArticleController {
 	@RequestMapping("/usr/article/doModify")
 	@ResponseBody
 	public ResultData doModify(Integer id, String title, String body) {
-		
+
 		if (id == null) {
 			return new ResultData("F-2", "id를 입력해주세요.");
 		}
