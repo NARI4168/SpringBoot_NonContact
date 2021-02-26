@@ -10,3 +10,7 @@ spring:
     password: sbs123414
 mybatis:
   type-aliases-package: com.NonContact.dto
+custom:
+  logging:
+    dir: log
+    level: debug 
