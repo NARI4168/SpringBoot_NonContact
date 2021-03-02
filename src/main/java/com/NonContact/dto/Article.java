@@ -11,7 +11,11 @@ public class Article {
 	private int id;
 	private String regDate;
 	private String updateDate;
+	private int memberId;
+	private String writer;
 	private String title;
 	private String body;
+	
+	private String extra_writer;
 
 }

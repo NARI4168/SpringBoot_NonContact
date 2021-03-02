@@ -33,4 +33,9 @@ public class MemberService {
 		
 	}
 
+	public boolean isAdmin(int loginedMemberId) {
+		
+		return loginedMemberId == 1;
+	}
+
 }

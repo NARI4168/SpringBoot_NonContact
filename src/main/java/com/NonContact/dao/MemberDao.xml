@@ -32,8 +32,8 @@
 	
 	
 	<!-- public void modifyMember(Map<String, Object> param); -->
-	<update id=" modifyMember">
-		UPDATE `member`
+	<update id="modifyMember">
+		UPDATE member
 		<set>
 			<if test="loginPw != null || name != null || nickname != null || cellphoneNum != null || email != null">
 				updateDate = NOW(),
@@ -51,7 +51,7 @@
 				cellphoneNum = #{cellphoneNum},
 			</if>
 			<if test="email != null">
-				email = #{email}
+				email = #{email},
 			</if>
 		</set>
 		WHERE id = #{id}

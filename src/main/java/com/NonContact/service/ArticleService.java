@@ -15,6 +15,8 @@ import com.NonContact.util.Util;
 public class ArticleService {
 	@Autowired
 	private ArticleDao articleDao;
+	@Autowired
+	private MemberService memberService;
 
 	public Article getArticle(int id) {
 
@@ -27,8 +29,6 @@ public class ArticleService {
 
 	}
 
-	// public ResultData addArticle(String title, String body) {
-	// articleDao.addArticle(title, body);
 	public ResultData addArticle(Map<String, Object> param) {
 		articleDao.addArticle(param);
 
@@ -50,5 +50,25 @@ public class ArticleService {
 		articleDao.modifyArticle(id, body, title);
 		return new ResultData("S-2", String.format("%d번 게시물이 수정되었습니다.", id), "id", id);
 
+	}
+
+	public ResultData getAuthChkRd(Article article, int loginedMemberId) {
+		if (article.getMemberId() == loginedMemberId) {
+			return new ResultData("S-1", "사용 권한이 확인 되었습니다.");
+		}
+		if (memberService.isAdmin(loginedMemberId)) {
+			return new ResultData("S-1", "사용 권한이 확인 되었습니다.");
+		}
+		return new ResultData("F-6", "사용 권한이 없습니다.");
+	}
+
+	public Article getForPrintArticle(int id) {
+		
+		return articleDao.getForPrintArticle(id);
+	}
+
+	public List<Article> getForPrintArticles(String searchKeywordType, String searchKeyword) {
+		
+		return articleDao.getForPrintArticles(searchKeywordType, searchKeyword);
 	}
 }

@@ -20,12 +20,12 @@ public class ResultData {
 		this.report = Util.mapOf(args);
 	}
 	
-	/*public boolean isSuccess() {
+	public boolean isSuccess() {
 		return resultCode.startsWith("S-");
 	}
 
 	public boolean isFail() {
 		return isSuccess() == false;
-	}*/
+	}
 
 }

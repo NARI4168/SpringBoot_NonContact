@@ -11,18 +11,22 @@ import com.NonContact.dto.Article;
 @Mapper
 public interface ArticleDao {
 
-	public Article getArticle(@Param(value = "id") int id);
+	public Article getArticle(@Param("id") int id);
 
+	public Article getForPrintArticle(@Param("id") int id);
+	
 	public List<Article> getArticles(@Param(value = "searchKeywordType") String searchKeywordType,
 			@Param(value = "searchKeyword") String searchKeyword);
 
-	// public void addArticle(@Param(value = "title") String title, @Param(value =
-	// "body") String body);
+	public List<Article> getForPrintArticles(@Param("searchKeywordType") String searchKeywordType, @Param(value = "searchKeyword") String searchKeyword);
+	
 	public void addArticle(Map<String, Object> param);
 
-	public void deleteArticle(@Param(value = "id") int id);
+	public void deleteArticle(@Param("id") int id);
 
-	public void modifyArticle(@Param(value = "id") int id, @Param(value = "body") String body,
-			@Param(value = "title") String title);
+	public void modifyArticle(@Param("id") int id, @Param("body") String body,
+			@Param("title") String title);
+
+
 
 }
