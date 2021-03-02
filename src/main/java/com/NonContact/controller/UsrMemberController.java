@@ -2,6 +2,8 @@ package com.NonContact.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +25,7 @@ public class UsrMemberController {
 		if (param.get("loginId") == null) {
 			return new ResultData("F-1", "loginId를 입력해주세요.");
 		}
-		
+
 		Member validLoginId = memberService.getMemberByLoginId((String) param.get("loginId"));
 
 		if (validLoginId != null) {
@@ -52,4 +54,64 @@ public class UsrMemberController {
 
 		return memberService.join(param);
 	}
+
+	@RequestMapping("/usr/member/doLogin")
+	@ResponseBody
+	public ResultData doLogin(String loginId, String loginPw, HttpSession session) {
+		if(session.getAttribute("loginedMemberId") != null) {
+			return new ResultData("F-4","로그인 된 상태입니다. ");
+		}
+		
+		if (loginId == null) {
+			return new ResultData("F-1", "loginId를 입력해주세요.");
+		}
+		
+		Member searchForLoginId = memberService.getMemberByLoginId(loginId);
+
+		if (searchForLoginId == null) {
+			return new ResultData("F-3", "가입되지 않은 아이디입니다.");
+		}
+		
+		if (loginPw == null) {
+			return new ResultData("F-1", "loginPw를 입력해주세요.");
+		}
+		
+		if(searchForLoginId.getLoginPw().equals(loginPw) == false) {
+			return new ResultData("F-4", "잘못된 비밀번호 입니다.");
+		}
+		
+		session.setAttribute("loginedMemberId", searchForLoginId.getId());
+
+		return new ResultData("S-2", String.format("%s님 환영합니다.", searchForLoginId.getNickname()));
+
+	}
+
+	@RequestMapping("/usr/member/doLogout")
+	@ResponseBody
+	public ResultData doLogout(HttpSession session) {
+		if(session.getAttribute("loginedMemberId") == null) {
+			return new ResultData("F-5","로그인 후 이용가능합니다.");
+		}
+		session.removeAttribute("loginedMemberId");
+		return new ResultData("S-3",String.format("안녕히가세요."));
+	}
+	
+	@RequestMapping("/usr/member/doModify")
+	@ResponseBody
+	public ResultData doModify(@RequestParam Map<String, Object> param, HttpSession session) {
+		if(session.getAttribute("loginedMemberId") == null) {
+			return new ResultData("F-5","로그인 후 이용가능합니다.");
+		}
+		
+		if(param.isEmpty()) {
+			return new ResultData("F-1","수정할 내용을 입력해주세요.");
+		}
+		
+		int loginedMemberId = (int)session.getAttribute("loginedMemberId");
+		param.put("id", loginedMemberId);
+		
+		return memberService.modifyMember(param);
+	}
+	
+
 }

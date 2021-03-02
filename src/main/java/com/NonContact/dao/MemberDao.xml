@@ -30,4 +30,31 @@
 		WHERE loginId = #{loginId}
 	</select>
 	
+	
+	<!-- public void modifyMember(Map<String, Object> param); -->
+	<update id=" modifyMember">
+		UPDATE `member`
+		<set>
+			<if test="loginPw != null || name != null || nickname != null || cellphoneNum != null || email != null">
+				updateDate = NOW(),
+			</if>
+			<if test="loginPw != null">
+				loginPw = #{loginPw},
+			</if>
+			<if test="name != null">
+				`name` = #{name},
+			</if>
+			<if test="nickname != null">
+				nickname = #{nickname},
+			</if>
+			<if test="cellphoneNum != null">
+				cellphoneNum = #{cellphoneNum},
+			</if>
+			<if test="email != null">
+				email = #{email}
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
 </mapper>

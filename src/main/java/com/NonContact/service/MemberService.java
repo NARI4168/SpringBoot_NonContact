@@ -20,11 +20,17 @@ public class MemberService {
 
 		int id = Util.getAsInt(param.get("id"), 0);
 
-		return new ResultData("S-1", String.format("%s님 환영합니다.", param.get("nickname")), "id", id);
+		return new ResultData("S-2", String.format("%s님 환영합니다.", param.get("nickname")), "id", id);
 	}
 
 	public Member getMemberByLoginId(String loginId) {
 		return memberDao.getMemberByLoginId(loginId);
+	}
+
+	public ResultData modifyMember(Map<String, Object> param) {
+		memberDao.modifyMember(param);
+		return new ResultData("S-2", "회원정보가 수정되었습니다.");
+		
 	}
 
 }
