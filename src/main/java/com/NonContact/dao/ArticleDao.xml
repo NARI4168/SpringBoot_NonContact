@@ -16,13 +16,16 @@
 
 	<!-- public Article getForPrintArticle(@Param("id") int id); -->
 	<select id="getForPrintArticle" resultType="Article">
-		SELECT A.*, M.nickname As writer,
+		SELECT A.*,
+		M.nickname As writer,
 		IFNULL(M.nickname, "탈퇴회원") AS extra__writer
-		FROM article AS A
+		FROM
+		article AS A
 		LEFT JOIN
 		`member` AS M
 		ON A.memberId = M.id
-		WHERE A.id = #{id}
+		WHERE A.id =
+		#{id}
 	</select>
 
 
@@ -47,11 +50,16 @@
 		String searchKeywordType, @Param(value = "searchKeyword") String searchKeyword); -->
 	<select id="getForPrintArticles" resultType="Article">
 		SELECT A.*, M.nickname AS writer,
-		IFNULL(M.nickname, "탈퇴회원") AS extra__writer
+		IFNULL(M.nickname, "탈퇴회원") AS
+		extra__writer
 		FROM article AS A
 		LEFT JOIN `member` AS M
-		ON A.memberId = M.id
+		ON A.memberId =
+		M.id
 		WHERE 1 <!-- True -->
+		<if test="boardId != null">
+			AND A.boardId = #{boardId}
+		</if>
 		<if test="searchKeywordType == 'title'"> AND title LIKE CONCAT('%',
 			#{searchKeyword}, '%') </if>
 		<if test="searchKeywordType == 'body'"> AND
@@ -59,7 +67,10 @@
 		<if test="searchKeywordType 
 			== 'titleAndBody'"> AND (title LIKE CONCAT('%', #{searchKeyword}, '%') OR
 			`body` LIKE CONCAT('%', #{searchKeyword}, '%')) </if>
-		ORDER BY id DESC
+		ORDER BY A.id DESC
+		<if test="limitStart != null and limitTake != null">
+			LIMIT #{limitStart}, #{limitTake}
+		</if>
 	</select>
 
 	<!-- public void addArticle(@Param(value = "title") String title, @Param(value 
@@ -88,7 +99,7 @@
 	<update id="modifyArticle">
 		UPDATE article
 		<set>
-			<if test="title != null || body != null">
+			<if test="title != null or body != null">
 				updateDate = NOW(),
 			</if>
 			<if test="title != null">
@@ -100,6 +111,25 @@
 		</set>
 		WHERE id = #{id}
 	</update>
+
+
+	<!-- public Board getBoard(int boardId); -->
+	<select id="getBoard" resultType="Board">
+		SELECT *
+		FROM board
+		WHERE id = #{id}
+	</select>
+	
+	
+	<!-- public void addReply(Map<String, Object> param); -->
+	<insert id="addReply" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO reply
+		SET articleId = #{articleId},
+		regDate = NOW(),
+		updateDate = NOW(),
+		`body` = #{body},
+		memberId = #{memberId}
+	</insert>
 
 
 </mapper>

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.NonContact.dto.Article;
+import com.NonContact.dto.Board;
 
 @Mapper
 public interface ArticleDao {
@@ -18,7 +19,7 @@ public interface ArticleDao {
 	public List<Article> getArticles(@Param(value = "searchKeywordType") String searchKeywordType,
 			@Param(value = "searchKeyword") String searchKeyword);
 
-	public List<Article> getForPrintArticles(@Param("searchKeywordType") String searchKeywordType, @Param(value = "searchKeyword") String searchKeyword);
+	public List<Article> getForPrintArticles(@Param("boardId") int boardId, @Param("searchKeywordType") String searchKeywordType, @Param("searchKeyword") String searchKeyword, @Param("limitStart") int limitStart, @Param("limitTake") int limitTake);
 	
 	public void addArticle(Map<String, Object> param);
 
@@ -26,6 +27,10 @@ public interface ArticleDao {
 
 	public void modifyArticle(@Param("id") int id, @Param("body") String body,
 			@Param("title") String title);
+
+	public Board getBoard(int boardId);
+
+	public void addReply(Map<String, Object> param);
 
 
 

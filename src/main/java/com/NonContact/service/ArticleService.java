@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.NonContact.dao.ArticleDao;
 import com.NonContact.dto.Article;
+import com.NonContact.dto.Board;
 import com.NonContact.dto.ResultData;
 import com.NonContact.util.Util;
 
@@ -67,8 +68,25 @@ public class ArticleService {
 		return articleDao.getForPrintArticle(id);
 	}
 
-	public List<Article> getForPrintArticles(String searchKeywordType, String searchKeyword) {
+	public List<Article> getForPrintArticles(int boardId, String searchKeywordType, String searchKeyword, int page, int itemsInAPage) {
 		
-		return articleDao.getForPrintArticles(searchKeywordType, searchKeyword);
+		int limitStart = (page -1)*itemsInAPage;
+		int limitTake = itemsInAPage;
+		
+		return articleDao.getForPrintArticles(boardId, searchKeywordType, searchKeyword, limitStart, limitTake);
+	}
+
+	public Board getBoard(int boardId) {
+		
+		return articleDao.getBoard(boardId);
+	}
+
+	public ResultData addReply(Map<String, Object> param) {
+		articleDao.addReply(param);
+
+		int id = Util.getAsInt(param.get("id"), 0);
+
+		return new ResultData("S-1", "추가되었습니다.", "id", id);
+
 	}
 }
