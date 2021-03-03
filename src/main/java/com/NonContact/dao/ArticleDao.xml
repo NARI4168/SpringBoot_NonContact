@@ -124,11 +124,12 @@
 	<!-- public void addReply(Map<String, Object> param); -->
 	<insert id="addReply" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO reply
-		SET articleId = #{articleId},
+		SET relId = #{articleId},
 		regDate = NOW(),
 		updateDate = NOW(),
+		relTypeCode = #{relTypeCode},
 		`body` = #{body},
-		memberId = #{memberId}
+		memberId = #{memberId}		
 	</insert>
 
 

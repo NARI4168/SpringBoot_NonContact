@@ -146,7 +146,7 @@ public class UsrArticleController {
 		int loginedMemberId = Util.getAsInt(session.getAttribute("loginedMemberId"), 0);
 		
 		if (param.get("articleId") == null && param.get("body") == null) {
-			return new ResultData("F-2", "articleId 또는 body이 입력되지 않았습니다.");
+			return new ResultData("F-2", "relId 또는 body이 입력되지 않았습니다.");
 		}
 		
 		param.put("memberId", loginedMemberId);
