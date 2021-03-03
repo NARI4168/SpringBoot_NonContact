@@ -30,12 +30,16 @@ public class MemberService {
 	public ResultData modifyMember(Map<String, Object> param) {
 		memberDao.modifyMember(param);
 		return new ResultData("S-2", "회원정보가 수정되었습니다.");
-		
+
 	}
 
 	public boolean isAdmin(int loginedMemberId) {
-		
+
 		return loginedMemberId == 1;
 	}
 
+	public Member getMember(int id) {
+		return memberDao.getMember(id);
+	}
+	
 }

@@ -29,13 +29,14 @@
 		FROM `member`
 		WHERE loginId = #{loginId}
 	</select>
-	
-	
+
+
 	<!-- public void modifyMember(Map<String, Object> param); -->
 	<update id="modifyMember">
 		UPDATE member
 		<set>
-			<if test="loginPw != null || name != null || nickname != null || cellphoneNum != null || email != null">
+			<if
+				test="loginPw != null || name != null || nickname != null || cellphoneNum != null || email != null">
 				updateDate = NOW(),
 			</if>
 			<if test="loginPw != null">
@@ -56,5 +57,15 @@
 		</set>
 		WHERE id = #{id}
 	</update>
-	
+
+
+	<!-- ublic Member getMember(@Param("id") int id); -->
+	<select id="getMember" resultType="Member">
+		SELECT *
+		FROM `member`
+		WHERE
+		loginId = #{id}
+	</select>
+
+
 </mapper>
