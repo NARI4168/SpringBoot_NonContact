@@ -2,6 +2,7 @@ package com.NonContact.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,13 +94,13 @@ public class UsrMemberController {
 
 	@RequestMapping("/usr/member/doModify")
 	@ResponseBody
-	public ResultData doModify(@RequestParam Map<String, Object> param, HttpSession session) {
+	public ResultData doModify(@RequestParam Map<String, Object> param, HttpServletRequest req) {
 		
 		if (param.isEmpty()) {
 			return new ResultData("F-1", "수정할 내용을 입력해주세요.");
 		}
 
-		int loginedMemberId = (int) session.getAttribute("loginedMemberId");
+		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
 		param.put("id", loginedMemberId);
 
 		return memberService.modifyMember(param);

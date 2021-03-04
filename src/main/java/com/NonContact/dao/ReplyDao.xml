@@ -11,11 +11,44 @@
 		SELECT R.*,
 		IFNULL(M.nickname, "탈퇴회원") AS extra__writer
 		FROM reply AS R
-		LEFT JOIN `member` AS M
+		LEFT JOIN
+		`member` AS M
 		ON R.memberId = M.id
 		WHERE 1
-		AND R.relTypeCode = #{relTypeCode}
+		AND R.relTypeCode =
+		#{relTypeCode}
 		AND R.relId = #{relId}
 	</select>
+
+
+	<!-- public Reply getReply(@Param("id") int id); -->
+	<select id="getReply" resultType="Reply">
+		SELECT R.*
+		FROM reply AS R
+		WHERE 1
+		AND R.id = #{id}
+	</select>
+
+
+	<!-- public void deleteReply(@Param("id") int id); -->
+	<delete id="deleteReply">
+		DELETE FROM reply WHERE id = #{id}
+	</delete>
+	
+	
+	<!-- void modifyReply(int id, String body); -->
+	<update id="modifyReply">
+		UPDATE reply
+		<set>
+			<if test="body != null">
+				updateDate = NOW(),
+			</if>
+			<if test="body != null">
+				`body` = #{body}
+			</if>
+		</set>
+		WHERE id = #{id}
+	
+	</update>
 
 </mapper>
