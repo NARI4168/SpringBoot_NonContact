@@ -41,5 +41,10 @@ public class MemberService {
 	public Member getMember(int id) {
 		return memberDao.getMember(id);
 	}
+
+	public boolean isAdmin(Member searchForLoginId) {
+	
+		return isAdmin(searchForLoginId.getId());
+	}
 	
 }

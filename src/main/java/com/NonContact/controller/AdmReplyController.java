@@ -16,13 +16,13 @@ import com.NonContact.service.ArticleService;
 import com.NonContact.service.ReplyService;
 
 @Controller
-public class UsrReplyController {
+public class AdmReplyController {
 	@Autowired
 	private ReplyService replyService;
 	@Autowired
 	private ArticleService articleService;
 
-	@RequestMapping("/usr/reply/list")
+	@RequestMapping("/adm/reply/list")
 	@ResponseBody
 	public ResultData showList(String relTypeCode, Integer relId) {
 		if (relId == null) {
@@ -44,7 +44,7 @@ public class UsrReplyController {
 	}
 
 	// 댓글 삭제
-	@RequestMapping("/usr/reply/doDelete")
+	@RequestMapping("/adm/reply/doDelete")
 	@ResponseBody
 	public ResultData doDelete(Integer id, HttpServletRequest req) {
 
@@ -69,7 +69,7 @@ public class UsrReplyController {
 	}
 
 	// 댓글 수정
-	@RequestMapping("/usr/reply/doModify")
+	@RequestMapping("/adm/reply/doModify")
 	@ResponseBody
 	public ResultData doModify(Integer id, String body, HttpServletRequest req) {
 
