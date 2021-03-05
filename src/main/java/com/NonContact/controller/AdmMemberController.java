@@ -20,6 +20,12 @@ public class AdmMemberController {
 	@Autowired
 	private MemberService memberService;
 
+	@RequestMapping("/adm/member/login")
+	public String login() {
+
+		return "adm/member/login";
+	}
+
 	@RequestMapping("/adm/member/doJoin")
 	@ResponseBody
 	public ResultData doJoin(@RequestParam Map<String, Object> param) {
@@ -67,7 +73,7 @@ public class AdmMemberController {
 		Member searchForLoginId = memberService.getMemberByLoginId(loginId);
 
 		if (searchForLoginId == null) {
-			return new ResultData("F-3", "가입되지 않은 아이디입니다.");
+			return new ResultData("F-3", "가입되지 않은 아이디입니다.","loginId",loginId);
 		}
 
 		if (loginPw == null) {
@@ -98,7 +104,7 @@ public class AdmMemberController {
 	@RequestMapping("/adm/member/doModify")
 	@ResponseBody
 	public ResultData doModify(@RequestParam Map<String, Object> param, HttpServletRequest req) {
-		
+
 		if (param.isEmpty()) {
 			return new ResultData("F-1", "수정할 내용을 입력해주세요.");
 		}

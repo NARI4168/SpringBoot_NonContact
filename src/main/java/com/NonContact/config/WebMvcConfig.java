@@ -45,6 +45,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		
 		// 로그인 필요
 		registry.addInterceptor(needToLoginInterceptor).addPathPatterns("/**").excludePathPatterns("/")
+		.excludePathPatterns("/home/main")
 				.excludePathPatterns("/adm/**").excludePathPatterns("/resource/**")
 				.excludePathPatterns("/usr/home/main").excludePathPatterns("/usr/member/login")
 				.excludePathPatterns("/usr/member/doLogin").excludePathPatterns("/usr/member/join")

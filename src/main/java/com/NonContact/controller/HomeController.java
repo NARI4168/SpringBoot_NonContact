@@ -2,14 +2,12 @@ package com.NonContact.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class UsrHomeController {	
-	@RequestMapping("/usr/home/main")
-	@ResponseBody
+public class HomeController {	
+	@RequestMapping("/home/main")	
 	public String showMain() {
-		return "빠이~";
+		return "home";
 	}
 	
 }
