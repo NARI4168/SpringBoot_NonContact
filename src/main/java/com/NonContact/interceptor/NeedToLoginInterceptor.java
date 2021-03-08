@@ -21,17 +21,26 @@ public class NeedToLoginInterceptor implements HandlerInterceptor {
 		boolean isAjax = true;
 
 		if (isLogined == false) {
+			String authKeyStatus = (String)request.getAttribute("authKeyStatus");
+
+			String resultCode = "F-A";
+			String resultMsg = "로그인 후 이용해주세요.";
+
+			if ( authKeyStatus.equals("invalid") ) {
+				resultCode = "F-B";
+				resultMsg = "인증키가 올바르지 않습니다.";
+			}
 			if (isAjax == false) {
 				response.setContentType("text/html; charset=UTF-8");
 				response.getWriter().append("<script>");
-				response.getWriter().append("alert('로그인 후 이용해주세요.');");
+				response.getWriter().append("alert('\" + resultMsg + \"');");
 				response.getWriter().append("location.replace('/usr/member/login?redirectUri="
 						+ request.getAttribute("encodedAfterLoginUri") + "');");
 				response.getWriter().append("</script>");
 				// 리턴 false;를 이후에 실행될 인터셉터와 액션이 실행되지 않음
 			} else {
 				response.setContentType("application/json; charset=UTF-8");
-				response.getWriter().append("{\"resultCode\":\"F-A\",\"msg\":\"로그인 후 이용해주세요.\"}");
+				response.getWriter().append("{\"resultCode\":\"" + resultCode + "\",\"msg\":\"" + resultMsg + "\"}");
 			}
 
 			return false;

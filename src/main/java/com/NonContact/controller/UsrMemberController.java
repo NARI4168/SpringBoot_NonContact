@@ -56,13 +56,48 @@ public class UsrMemberController {
 		return memberService.join(param);
 	}
 
+	@RequestMapping("/usr/member/memberByAuthKey")
+	@ResponseBody
+	public ResultData memberByAuthKey(String authKey) {
+		if (authKey == null) {
+			return new ResultData("F-1", "authKey를 입력해주세요.");
+		}
+		Member searchForLoginId = memberService.getMemberByAuthKey(authKey);
+		
+		return new ResultData("S-1", String.format("유효한 회원입니다."), "member", searchForLoginId);
+	}
+
+	@RequestMapping("/usr/member/authKey")
+	@ResponseBody
+	public ResultData showAuthKey(String loginId, String loginPw) {
+		if (loginId == null) {
+			return new ResultData("F-1", "loginId를 입력해주세요.");
+		}
+
+		Member searchForLoginId = memberService.getMemberByLoginId(loginId);
+
+		if (searchForLoginId == null) {
+			return new ResultData("F-3", "가입되지 않은 아이디입니다.", "loginId", loginId);
+		}
+		if (loginPw == null) {
+			return new ResultData("F-1", "loginPw를 입력해주세요.");
+		}
+
+		if (searchForLoginId.getLoginPw().equals(loginPw) == false) {
+			return new ResultData("F-4", "잘못된 비밀번호 입니다.");
+		}
+
+		return new ResultData("S-1", String.format("%s님 환영합니다.", searchForLoginId.getNickname()), "authKey",
+				searchForLoginId.getAuthKey(), "id", searchForLoginId.getId(), "name", searchForLoginId.getName(),
+				"nickname", searchForLoginId.getNickname());
+	}
+
 	@RequestMapping("/usr/member/login")
 	public String login() {
 
 		return "usr/member/login";
 	}
-	
-	
+
 	@RequestMapping("/usr/member/doLogin")
 	@ResponseBody
 	public ResultData doLogin(String loginId, String loginPw, HttpSession session) {
@@ -74,7 +109,7 @@ public class UsrMemberController {
 		Member searchForLoginId = memberService.getMemberByLoginId(loginId);
 
 		if (searchForLoginId == null) {
-			return new ResultData("F-3", "가입되지 않은 아이디입니다.");
+			return new ResultData("F-3", "가입되지 않은 아이디입니다.", "loginId", loginId);
 		}
 
 		if (loginPw == null) {
@@ -102,7 +137,7 @@ public class UsrMemberController {
 	@RequestMapping("/usr/member/doModify")
 	@ResponseBody
 	public ResultData doModify(@RequestParam Map<String, Object> param, HttpServletRequest req) {
-		
+
 		if (param.isEmpty()) {
 			return new ResultData("F-1", "수정할 내용을 입력해주세요.");
 		}

@@ -146,3 +146,14 @@ ALTER TABLE reply CHANGE `articleId` `relId` INT(10) UNSIGNED NOT NULL;
 
 # 고속 검색을 위해서 인덱스 걸기
 ALTER TABLE reply ADD KEY (relTypeCode, relId); 
+
+# authKey 칼럼을 추가
+ALTER TABLE `member` ADD COLUMN authKey CHAR(80) NOT NULL AFTER loginPw;
+
+# 기존 회원의 authKey 데이터 채우기
+UPDATE `member`
+SET authKey = CONCAT("authKey1__", UUID(), "__", RAND())
+WHERE authKey = '';
+
+# authKey 칼럼에 유니크 인덱스 추가
+ALTER TABLE `nonContact`.`member` ADD UNIQUE INDEX (`authKey`);
