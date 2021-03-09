@@ -63,7 +63,7 @@ public class UsrMemberController {
 			return new ResultData("F-1", "authKey를 입력해주세요.");
 		}
 		Member searchForLoginId = memberService.getMemberByAuthKey(authKey);
-		
+
 		return new ResultData("S-1", String.format("유효한 회원입니다."), "member", searchForLoginId);
 	}
 

@@ -65,7 +65,7 @@
 		SELECT *
 		FROM `member`
 		WHERE
-		loginId = #{id}
+		id = #{id}
 	</select>
 
 
