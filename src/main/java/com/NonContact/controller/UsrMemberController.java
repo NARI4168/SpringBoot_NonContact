@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.NonContact.dto.Member;
 import com.NonContact.dto.ResultData;
 import com.NonContact.service.MemberService;
+import com.NonContact.util.Util;
 
 @Controller
 public class UsrMemberController {
@@ -100,7 +101,7 @@ public class UsrMemberController {
 
 	@RequestMapping("/usr/member/doLogin")
 	@ResponseBody
-	public ResultData doLogin(String loginId, String loginPw, HttpSession session) {
+	public ResultData doLogin(String loginId, String loginPw,String redirectUrl, HttpSession session) {
 
 		if (loginId == null) {
 			return new ResultData("F-1", "loginId를 입력해주세요.");
@@ -121,6 +122,8 @@ public class UsrMemberController {
 		}
 
 		session.setAttribute("loginedMemberId", searchForLoginId.getId());
+		
+		redirectUrl = Util.ifEmpty(redirectUrl, "../home/main");
 
 		return new ResultData("S-2", String.format("%s님 환영합니다.", searchForLoginId.getNickname()));
 

@@ -41,6 +41,7 @@
 			</h1>
 			<form class="mt-6" action="doLogin" method="POST"
 				onsubmit="LoginForm__checkAndSubmit(this); return false;">
+				<input type="hidden" name="redirectUrl" value="${param.redirectUrl}" />
 				<label class="block text-xs font-semibold text-gray-600 uppercase">아이디</label>
 				<input type="text" name="loginId" placeholder="아이디를 입력해주세요."
 					autofocus="autofocus"
