@@ -50,16 +50,17 @@
 		String searchKeywordType, @Param(value = "searchKeyword") String searchKeyword); -->
 	<select id="getForPrintArticles" resultType="Article">
 		SELECT A.*, M.nickname AS writer,
-		IFNULL(M.nickname, "탈퇴회원") AS
-		extra__writer
+		IFNULL(M.nickname, "탈퇴회원") AS extra__writer,
+		B.name AS extra__boardName
 		FROM article AS A
 		LEFT JOIN `member` AS M
-		ON A.memberId =
-		M.id
+		ON A.memberId = M.id
+		LEFT JOIN `board` AS B
+		ON A.boardId = B.id
 		WHERE 1 <!-- True -->
-		<if test="boardId != null">
+		<if test="boardId != 0">
 			AND A.boardId = #{boardId}
-		</if>
+		</if>		
 		<if test="searchKeywordType == 'title'"> AND title LIKE CONCAT('%',
 			#{searchKeyword}, '%') </if>
 		<if test="searchKeywordType == 'body'"> AND
@@ -118,19 +119,21 @@
 	<select id="getBoard" resultType="Board">
 		SELECT *
 		FROM board
-		WHERE id = #{id}
+		WHERE id = #{boardId}		
 	</select>
-	
-	
+
+
 	<!-- public void addReply(Map<String, Object> param); -->
 	<insert id="addReply" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO reply
 		SET relId = #{articleId},
 		regDate = NOW(),
-		updateDate = NOW(),
+		updateDate =
+		NOW(),
 		relTypeCode = #{relTypeCode},
 		`body` = #{body},
-		memberId = #{memberId}		
+		memberId =
+		#{memberId}
 	</insert>
 
 

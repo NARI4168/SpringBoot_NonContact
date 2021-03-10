@@ -112,7 +112,7 @@ public class AdmMemberController {
 		String msg = String.format(Nickname + "님 안녕히가세요.");
 		session.removeAttribute("loginedMemberId");
 
-		return Util.msgAndReplace(msg, "/adm/member/login"); //로그인 화면으로 이동
+		return Util.msgAndReplace(msg, "../member/login"); //로그인 화면으로 이동
 	}
 
 	@RequestMapping("/adm/member/doModify")

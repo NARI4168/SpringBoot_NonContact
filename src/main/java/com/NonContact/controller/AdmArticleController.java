@@ -16,22 +16,21 @@ import com.NonContact.dto.Board;
 import com.NonContact.dto.ResultData;
 import com.NonContact.service.ArticleService;
 
-
 @Controller
-public class AdmArticleController {
+public class AdmArticleController extends BaseController {
 	@Autowired
 	private ArticleService articleService;
 
 	@RequestMapping("/adm/article/detail")
 	@ResponseBody
 	public ResultData showDetail(Integer id) {
-		
-		if(id == null) {
+
+		if (id == null) {
 			return new ResultData("F-2", "id를 입력해주세요.");
 		}
 		Article article = articleService.getForPrintArticle(id);
-		
-		if(article == null) {
+
+		if (article == null) {
 			return new ResultData("F-1", "해당 게시물이 존재하지 않습니다.");
 		}
 
@@ -39,15 +38,16 @@ public class AdmArticleController {
 	}
 
 	@RequestMapping("/adm/article/list")
-	@ResponseBody
-	public ResultData showList(@RequestParam(defaultValue = "1") int boardId, String searchKeywordType, String searchKeyword, @RequestParam(defaultValue = "1") int page) {
+	public String showList(HttpServletRequest req, @RequestParam(defaultValue = "0") int boardId,
+			String searchKeywordType, String searchKeyword, @RequestParam(defaultValue = "1") int page) {
 		
+		if(boardId != 0) {
 		Board board = articleService.getBoard(boardId);
-		
-		if(board == null){
-			return new ResultData("F-1","해당 게시판은 존재하지 않습니다.");
-		}
-		
+	
+		if (board == null) {
+			return msgAndBack(req, "해당 게시판은 존재하지 않습니다.");
+		}}
+
 		if (searchKeywordType != null) {
 			searchKeywordType = searchKeywordType.trim();
 		}
@@ -63,19 +63,19 @@ public class AdmArticleController {
 		if (searchKeyword == null) {
 			searchKeywordType = null;
 		}
-		
+
 		int itemsInAPage = 3;
 
-		List<Article> articles = articleService.getForPrintArticles(boardId,searchKeywordType, searchKeyword, page, itemsInAPage);
-
-		return new ResultData("S-1", "성공", "articles", articles);
+		List<Article> articles = articleService.getForPrintArticles(boardId, searchKeywordType, searchKeyword, page, itemsInAPage);
+		req.setAttribute("articles", articles);
+		return ("adm/article/list");
 	}
 
 	// 게시물 추가
 	@RequestMapping("/adm/article/doAdd")
 	@ResponseBody
 	public ResultData doAdd(@RequestParam Map<String, Object> param, HttpServletRequest req) {
-		int loginedMemberId = (int)req.getAttribute("loginedMemberId");
+		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
 
 		if (param.get("title") == null && param.get("body") == null) {
 			return new ResultData("F-2", "title 또는 body가 입력되지 않았습니다.");
@@ -91,7 +91,7 @@ public class AdmArticleController {
 	@ResponseBody
 	public ResultData doDelete(Integer id, HttpServletRequest req) {
 
-		int loginedMemberId = (int)req.getAttribute("loginedMemberId");
+		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
 
 		if (id == null) {
 			return new ResultData("F-2", "id를 입력해주세요.");
@@ -116,7 +116,7 @@ public class AdmArticleController {
 	@ResponseBody
 	public ResultData doModify(Integer id, String title, String body, HttpServletRequest req) {
 
-		int loginedMemberId = (int)req.getAttribute("loginedMemberId");
+		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
 
 		if (id == null) {
 			return new ResultData("F-2", "id를 입력해주세요.");
@@ -138,22 +138,20 @@ public class AdmArticleController {
 
 		return articleService.modifyArticle(id, body, title);
 	}
-	
-	//댓글 추가
+
+	// 댓글 추가
 	@RequestMapping("/adm/article/doAddReply")
 	@ResponseBody
 	public ResultData doAddReply(@RequestParam Map<String, Object> param, HttpServletRequest req) {
-		int loginedMemberId = (int)req.getAttribute("loginedMemberId");
-		
+		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
+
 		if (param.get("articleId") == null && param.get("body") == null) {
 			return new ResultData("F-2", "articleId 또는 body이 입력되지 않았습니다.");
 		}
-		
+
 		param.put("memberId", loginedMemberId);
-		
+
 		return articleService.addReply(param);
 	}
-	
-	
 
 }

@@ -1,0 +1,45 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+<header class="top-bar h-20 bg-white">
+	<div class="container mx-auto h-full flex">
+		<a href="/adm/home/main" class="logo flex items-center ml-2"> <span>
+				<i class="fas fa-user-astronaut"></i>
+		</span> <span>Administrator</span>
+		</a>
+
+		<div class="flex-grow"></div>
+
+		<nav class="menu-box-1">
+			<ul class="flex h-full">
+				<li><a
+					class="text-xl px-4 flex items-center h-full hover:underline"
+					href="/adm/home/main"> <span>HOME</span>
+				</a></li>
+				<li><a
+					class="text-xl px-4 flex items-center h-full hover:underline"
+					href="#"> <span>회원 관리</span>
+				</a></li>
+				<li><a
+					class="text-xl px-4 flex items-center h-full hover:underline"
+					href="/adm/board/list"> <span>게시판 관리</span>
+				</a></li>
+				<li class="dropdown"><a
+					class="text-xl px-4 flex items-center h-full hover:underline dropbtn"
+					href="/adm/article/list"> <span>게시물 관리</span>
+				</a>
+					<div class="content text-center font-thin">
+						<a href="/adm/article/list?boardId=1">공지 게시물</a> 
+						<a href="/adm/article/list?boardId=2">자유 게시물</a> 			
+					</div>
+				</li>
+	
+	<li><a
+		class="text-xl px-4 flex items-center h-full hover:underline"
+		href="/adm/member/doLogout"> <span>로그아웃</span>
+	</a></li>
+	</ul>
+	</nav>
+	</div>
+</header>
+<%@ include file="head.jspf"%>
