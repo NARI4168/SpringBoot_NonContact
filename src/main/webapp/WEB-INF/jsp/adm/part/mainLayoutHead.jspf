@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ include file="head.jspf"%>
 
 <header class="top-bar h-20 bg-white">
 	<div class="container mx-auto h-full flex">
@@ -29,8 +30,8 @@
 					href="/adm/article/list"> <span>게시물 관리</span>
 				</a>
 					<div class="content text-center font-thin">
-						<a href="/adm/article/list?boardId=1">공지 게시물</a> 
-						<a href="/adm/article/list?boardId=2">자유 게시물</a> 			
+						<a href="/adm/article/list?boardId=1">공지사항</a> 
+						<a href="/adm/article/list?boardId=2">자유게시판</a> 			
 					</div>
 				</li>
 	
@@ -42,4 +43,4 @@
 	</nav>
 	</div>
 </header>
-<%@ include file="head.jspf"%>
+

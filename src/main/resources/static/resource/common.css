@@ -47,6 +47,18 @@ html>body {
 	font-weight: bold;
 }
 
+.form-row + .form-row {
+	margin-top:10px;
+}
+
+.form-row-input {
+	padding: 15px;
+}
+
+textarea.form-row-input {
+	min-height:100px;
+} 
+
 /*  다운드롭 네비게이션 */
 .content {
 	background: #f9f9f9;

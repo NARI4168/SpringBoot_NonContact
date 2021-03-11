@@ -72,6 +72,11 @@ public class AdmArticleController extends BaseController {
 	}
 
 	// 게시물 추가
+	@RequestMapping("/adm/article/add")
+	public String showAdd(@RequestParam Map<String, Object> param, HttpServletRequest req) {
+		return "adm/article/add";
+	}
+	
 	@RequestMapping("/adm/article/doAdd")
 	@ResponseBody
 	public ResultData doAdd(@RequestParam Map<String, Object> param, HttpServletRequest req) {

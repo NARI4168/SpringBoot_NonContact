@@ -7,6 +7,27 @@
 <section class="section-1">
 	<div class="bg-white shadow-md rounded container mx-auto p-8 mt-8">
 
+
+		<div>
+			<select class="py-2 border-gray-600 border-2 rounded select-board-id">
+				<option value="">게시물 선택</option>
+				<option value="0">전제보기</option>
+				<option value="1">공지사항</option>
+				<option value="2">자유게시판</option>
+			</select>
+			<script>
+				$('.section-1 .select-board-id').val(param.boardId);
+
+				$('.section-1 .select-board-id').change(function() {
+					location.href = '?boardId=' + this.value;
+				});
+			</script>
+			
+			<a href="add?" class="btn-primary bg-gray-600 rounded hover:bg-gray-400 text-white font-bold py-2.5 px-5">글쓰기</a>
+		</div>
+
+
+
 		<c:forEach items="${articles}" var="article">
 
 			<div class="flex justify-between items-center mt-10">
@@ -51,10 +72,27 @@
 
 
 		<div class="flex justify-center items-center">
+		
+		<c:set var="pageSize" value="5" />
 
-			<a href="#" class="text-gray-700 hover:underline"> ≪ </a>&nbsp;&nbsp; 
-			<a href="#" class="text-gray-700 hover:underline">페이지</a>&nbsp;&nbsp;
-			<a href="#" class="text-gray-700 hover:underline">≫</a>
+		
+		<c:set var="from" value="1" />
+		<c:set var="end" value="${pageSize}" />
+		
+	
+		<a class="hover:underline" href="#"> ≪ </a>	&nbsp;&nbsp;	
+	
+	
+
+		<c:forEach var="i" begin="${from}" end="${end}" step="1">
+			
+			<a class="hover:underline" href="list?page=${i}">${i}</a> &nbsp;&nbsp;
+						
+		</c:forEach>
+	
+
+	
+			<a class="hover:underline"  href="#">≫</a>
 
 		</div>
 
