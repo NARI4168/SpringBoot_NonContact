@@ -48,6 +48,11 @@
 				<a href="detail?id=${article.id}"
 					class="text-xl text-gray-900 font-bold hover:underline">${article.title}</a>
 				<p class="mt-2 text-gray-600">${article.body}</p>
+				<div>
+						<c:if test="${article.extra__thumbImg != null}">
+							<img src="${article.extra__thumbImg}" width="50" height="50" alt="" />
+						</c:if>
+					</div>
 			</div>
 
 			<div class="flex justify-between items-center mt-4">

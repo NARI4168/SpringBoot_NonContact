@@ -15,6 +15,7 @@ spring:
 mybatis:
   type-aliases-package: com.NonContact.dto
 custom:
+  genFileDirPath: C:/work/nonContact-file
   logging:
     dir: log
     level: debug 

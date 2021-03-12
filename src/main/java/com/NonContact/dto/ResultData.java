@@ -12,12 +12,12 @@ public class ResultData {
 	
 	private String resultCode;
 	private String msg;
-	private Map<String, Object> report;
+	private Map<String, Object> body;
 	
 	public ResultData(String resultCode, String msg, Object...args) {
 		this.resultCode = resultCode;
 		this.msg = msg;
-		this.report = Util.mapOf(args);
+		this.body = Util.mapOf(args);
 	}
 	
 	public boolean isSuccess() {

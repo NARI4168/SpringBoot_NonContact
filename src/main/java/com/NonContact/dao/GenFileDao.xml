@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.NonContact.dao.GenFileDao">
+
+	<!-- void saveMeta(Map<String, Object> param); -->
+	<insert id="saveMeta" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO genFile
+		SET regDate = NOW(),
+		updateDate = NOW(),
+		relTypeCode
+		= #{relTypeCode},
+		relId = #{relId},
+		typeCode = #{typeCode},
+		type2Code =
+		#{type2Code},
+		fileNo = #{fileNo},
+		originFileName = #{originFileName},
+		fileExtTypeCode = #{fileExtTypeCode},
+		fileExtType2Code =
+		#{fileExtType2Code},
+		fileSize = #{fileSize},
+		fileDir = #{fileDir},
+		fileExt = #{fileExt}
+	</insert>
+
+
+	<!-- GenFile getGenFile(@Param("relTypeCode") String relTypeCode,@Param("relId") 
+		int relId,@Param("typeCode") String typeCode,@Param("type2Code") String type2Code,@Param("fileNo") 
+		int fileNo); -->
+	<select id="getGenFile" resultType="GenFile">
+		SELECT *
+		FROM genFile
+		WHERE 1
+		AND relTypeCode = #{relTypeCode}
+		AND relId = #{relId}
+		AND typeCode =
+		#{typeCode}
+		AND type2Code = #{type2Code}
+		AND fileNo = #{fileNo}
+	</select>
+
+
+
+</mapper>
