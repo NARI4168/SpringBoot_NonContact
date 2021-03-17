@@ -4,12 +4,14 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -229,5 +231,9 @@ public class Util {
 		String dateStr = format1.format(System.currentTimeMillis());
 
 		return dateStr;
+	}
+	
+	public static List<Integer> getListDividedBy(String str, String divideBy) {
+		return Arrays.asList(str.split(divideBy)).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
 	}
 }

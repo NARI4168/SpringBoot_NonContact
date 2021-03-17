@@ -24,7 +24,6 @@ import com.NonContact.service.GenFileService;
 public class AdmArticleController extends BaseController {
 	@Autowired
 	private ArticleService articleService;
-
 	@Autowired
 	private GenFileService genFileService;
 
@@ -113,9 +112,10 @@ public class AdmArticleController extends BaseController {
 		ResultData addArticleRd = articleService.addArticle(param);
 
 		int newArticleId = (int) addArticleRd.getBody().get("id");
-
+System.out.println("1111111111111111111111111111111111111111111111111111");
+		System.out.println(newArticleId);
 		Map<String, MultipartFile> fileMap = mltipartRequest.getFileMap();
-
+		
 		for (String fileInputName : fileMap.keySet()) {
 			MultipartFile multipartFile = fileMap.get(fileInputName);
 			if (multipartFile.isEmpty() == false) {

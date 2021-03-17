@@ -37,10 +37,11 @@
 
 		<div class="mt-10 px-4">
 			<p class="my-5 text-xl text-gray-800">${article.body}</p>
-			
+
 			<div class="mt-10">
 				<c:if test="${article.extra__thumbImg != null}">
-					<img src="${article.extra__thumbImg}" width="200" height="200" alt="" />
+					<img src="${article.extra__thumbImg}" width="200" height="200"
+						alt="" />
 				</c:if>
 			</div>
 		</div>
