@@ -24,8 +24,15 @@
 		</div>
 
 		<div class="flex justify-between items-center mt-5">
-			<span class="font-light text-black">${article.regDate}</span>
 
+			<span class="font-light text-black">${article.regDate}</span>
+			<!-- <a
+				href="modify?id=${article.id}"
+				class="ml-2 text-blue-500 hover:underline">수정</a> <a
+				onclick="if ( !confirm('삭제하시겠습니까?') ) return false;"
+				href="doDelete?id=${article.id}"
+				class="ml-2 text-blue-500 hover:underline">삭제</a>
+			<div class="flex-grow"></div>-->
 			<div>
 				<a href="#" class="flex items-center"> <img
 					src="https://mblogthumb-phinf.pstatic.net/MjAxODAxMTlfMjkg/MDAxNTE2MzQ5ODAyNzY5.JnY2p-t9mGEly1Y6F1Fvvm2udGo5aP_9fHRjDv_v5ikg.o1B5rIWM4SwMD0Oa2BuChU7Cl704DxIBdlLYfAEF4Hwg.JPEG.92_song/%25EC%2599%25B8%25EA%25B5%25AD%25EC%259D%25B8%25EB%25AC%25BC%25EA%25B0%2590%25EC%2584%25B1%25EC%2582%25AC%25EC%25A7%2584_(12).jpg?type=w800"

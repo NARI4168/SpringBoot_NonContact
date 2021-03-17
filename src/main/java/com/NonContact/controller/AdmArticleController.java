@@ -1,5 +1,6 @@
 package com.NonContact.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -112,10 +113,9 @@ public class AdmArticleController extends BaseController {
 		ResultData addArticleRd = articleService.addArticle(param);
 
 		int newArticleId = (int) addArticleRd.getBody().get("id");
-System.out.println("1111111111111111111111111111111111111111111111111111");
-		System.out.println(newArticleId);
+
 		Map<String, MultipartFile> fileMap = mltipartRequest.getFileMap();
-		
+
 		for (String fileInputName : fileMap.keySet()) {
 			MultipartFile multipartFile = fileMap.get(fileInputName);
 			if (multipartFile.isEmpty() == false) {
@@ -129,55 +129,76 @@ System.out.println("1111111111111111111111111111111111111111111111111111");
 
 	// 게시물 삭제
 	@RequestMapping("/adm/article/doDelete")
-	@ResponseBody
-	public ResultData doDelete(Integer id, HttpServletRequest req) {
+	public String doDelete(Integer id, HttpServletRequest req) {
 
 		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
 
 		if (id == null) {
-			return new ResultData("F-2", "id를 입력해주세요.");
+			return msgAndBack(req, "id를 입력해주세요.");
 		}
 		Article article = articleService.getArticle(id);
 
 		if (article == null) {
-			return new ResultData("F-1", "해당 게시물이 존재하지 않습니다.");
+			return msgAndBack(req, "해당 게시물이 존재하지 않습니다.");
 		}
 
 		ResultData AuthChkRd = articleService.getAuthChkRd(article, loginedMemberId);
 
 		if (AuthChkRd.isFail()) {
-			return AuthChkRd;
+			return msgAndBack(req, "권한이 없습니다.");
 		}
 
-		return articleService.deleteArticle(id);
+		articleService.deleteArticle(id);
+
+		return msgAndReplace(req, String.format("%d번 게시물이 삭제되었습니다.", id), "../article/list");
 	}
 
 	// 게시물 수정
+	@RequestMapping("/adm/article/modify")
+	public String showModify(Integer id, HttpServletRequest req) {
+
+		Article article = articleService.getForPrintArticle(id);
+
+		List<GenFile> files = genFileService.getGenFiles("article", article.getId(), "common", "attachment");
+
+		Map<String, GenFile> filesMap = new HashMap<>();
+
+		for (GenFile file : files) {
+			filesMap.put(file.getFileNo() + "", file);
+		}
+
+		article.getExtraNotNull().put("file__common__attachment", filesMap);
+		req.setAttribute("article", article);
+
+		return "adm/article/modify";
+	}
+
 	@RequestMapping("/adm/article/doModify")
-	@ResponseBody
-	public ResultData doModify(Integer id, String title, String body, HttpServletRequest req) {
+	public String doModify(Integer id, String title, String body, HttpServletRequest req) {
 
 		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
 
-		if (id == null) {
-			return new ResultData("F-2", "id를 입력해주세요.");
-		}
-		if (title == null && body == null) {
-			return new ResultData("F-2", "title 또는 body가 입력되지 않았습니다.");
-		}
+		/*
+		 * if (id == null) { return msgAndBack(req, "id를 입력해주세요."); } if (title == null
+		 * && body == null) { return new ResultData("F-2",
+		 * "title 또는 body가 입력되지 않았습니다."); }
+		 */
 
 		Article article = articleService.getArticle(id);
 		if (article == null) {
-			return new ResultData("F-1", "해당 게시물이 존재하지 않습니다.");
+			return msgAndBack(req, "해당 게시물이 존재하지 않습니다.");
 		}
 
 		ResultData AuthChkRd = articleService.getAuthChkRd(article, loginedMemberId);
 
 		if (AuthChkRd.isFail()) {
-			return AuthChkRd;
+			return msgAndBack(req, "권한이 없습니다.");
 		}
 
-		return articleService.modifyArticle(id, body, title);
+		articleService.modifyArticle(id, body, title);
+
+		return msgAndReplace(req, String.format("%d번 게시물이 수정되었습니다.", id), "../article/detail?id=" + id);
+
 	}
 
 	// 댓글 추가

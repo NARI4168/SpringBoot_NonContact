@@ -43,6 +43,25 @@
 	</select>
 
 
+	<!-- List<GenFile> getGenFiles(@Param("relTypeCode") String relTypeCode, 
+		@Param("relId") int relId); -->
+	<select id="getGenFiles" resultType="GenFile">
+		SELECT *
+		FROM genFile
+		WHERE 1
+		AND relTypeCode = #{relTypeCode}
+		AND relId =
+		#{relId}
+		<if test="typeCode != null">
+			AND typeCode = #{typeCode}
+		</if>
+		<if test="type2Code != null">
+			AND type2Code = #{type2Code}
+		</if>
+		ORDER BY typeCode, type2Code, fileNo
+	</select>
+
+
 	<!-- void changeRelId(@Param("id")int id,@Param("relId") int relId); -->
 	<update id="changeRelId">
 		UPDATE genFile
@@ -53,4 +72,18 @@
 		WHERE id = #{id}
 	</update>
 
+	<!-- void deleteFile(@Param("id") int id); -->
+	<delete id="deleteFile">
+		DELETE FROM genFile
+		WHERE id = #{id}
+	</delete>
+
+
+	<!-- void deleteFiles(@Param("relTypeCode") String relTypeCode, @Param("relId") 
+		int relId); -->
+	<delete id="deleteFiles">
+		DELETE FROM genFile
+		WHERE relTypeCode = #{relTypeCode}
+		AND relId = #{relId}
+	</delete>
 </mapper>

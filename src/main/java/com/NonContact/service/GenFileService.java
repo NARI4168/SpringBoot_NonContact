@@ -23,7 +23,7 @@ import com.NonContact.util.Util;
 public class GenFileService {
 	@Value("${custom.genFileDirPath}")
 	private String genFileDirPath;
-	
+
 	@Autowired
 	private GenFileDao genFileDao;
 
@@ -97,7 +97,8 @@ public class GenFileService {
 			return new ResultData("F-3", "파일저장에 실패하였습니다.");
 		}
 
-		return new ResultData("S-1", "파일이 생성되었습니다.", "id", newGenFileId, "fileRealPath", targetFilePath, "fileName", targetFileName, "fileInputName", fileInputName);
+		return new ResultData("S-1", "파일이 생성되었습니다.", "id", newGenFileId, "fileRealPath", targetFilePath, "fileName",
+				targetFileName, "fileInputName", fileInputName);
 	}
 
 	public GenFile getGenFile(String relTypeCode, int relId, String typeCode, String type2Code, int fileNo) {
@@ -131,5 +132,24 @@ public class GenFileService {
 	public void changeRelId(int id, int relId) {
 		genFileDao.changeRelId(id, relId);
 	}
-	
+
+	public void deleteFiles(String relTypeCode, int relId) {
+		List<GenFile> genFiles = genFileDao.getGenFiles(relTypeCode, relId);
+
+		for (GenFile genFile : genFiles) {
+			deleteFile(genFile);
+		}
+	}
+
+	private void deleteFile(GenFile genFile) {
+		String filePath = genFile.getFilePath(genFileDirPath);
+		Util.delteFile(filePath);
+
+		genFileDao.deleteFile(genFile.getId());
+	}
+
+	public List<GenFile> getGenFiles(String relTypeCode, int relId, String typeCode, String type2Code) {
+		return genFileDao.getGenFiles(relTypeCode, relId, typeCode, type2Code);
+	}
+
 }
