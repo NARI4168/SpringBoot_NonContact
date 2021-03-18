@@ -19,8 +19,9 @@
 						class="px-2 py-1 bg-purple-400 text-gray-100 font-bold rounded hover:bg-gray-400">자유</div>
 				</c:otherwise>
 			</c:choose>
+			<a class="text-xl text-gray-900 font-bold">NO. ${article.id}</a>
 
-			<a class="justify-center text-3xl text-gray-900 font-bold">${article.title}</a>
+			<a class=" text-3xl text-gray-900 font-bold">${article.title}</a>
 		</div>
 
 		<div class="flex justify-between items-center mt-5">

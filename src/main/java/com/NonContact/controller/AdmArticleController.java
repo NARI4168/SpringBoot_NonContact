@@ -133,11 +133,12 @@ public class AdmArticleController extends BaseController {
 
 		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
 
-		if (id == null) {
-			return msgAndBack(req, "id를 입력해주세요.");
-		}
+		//if (id == null) {
+		//	return msgAndBack(req, "id를 입력해주세요.");
+		//}
 		Article article = articleService.getArticle(id);
-
+System.out.println("1111111111111111111111111111111111111111");
+		System.out.println(id);
 		if (article == null) {
 			return msgAndBack(req, "해당 게시물이 존재하지 않습니다.");
 		}
@@ -178,11 +179,12 @@ public class AdmArticleController extends BaseController {
 
 		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
 
-		/*
-		 * if (id == null) { return msgAndBack(req, "id를 입력해주세요."); } if (title == null
-		 * && body == null) { return new ResultData("F-2",
-		 * "title 또는 body가 입력되지 않았습니다."); }
-		 */
+		// if (id == null) {
+		// return msgAndBack(req, "id를 입력해주세요.");
+		// }
+		if (title == null && body == null) {
+			return msgAndBack(req, "title 또는 body가 입력되지 않았습니다.");
+		}
 
 		Article article = articleService.getArticle(id);
 		if (article == null) {

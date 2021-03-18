@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.NonContact.dao.ArticleDao;
 import com.NonContact.dto.Article;
 import com.NonContact.dto.Board;
+import com.NonContact.dto.GenFile;
 import com.NonContact.dto.ResultData;
 import com.NonContact.util.Util;
 
@@ -38,14 +39,14 @@ public class ArticleService {
 		int id = Util.getAsInt(param.get("id"), 0);
 
 		String genFileIdsStr = Util.ifEmpty((String) param.get("genFileIdsStr"), null);
-		
+
 		if (genFileIdsStr != null) {
 			List<Integer> genFileIds = Util.getListDividedBy(genFileIdsStr, ",");
 
 			// 파일이 먼저 생성된 후에, 관련 데이터가 생성되는 경우에는, file의 relId가 일단 0으로 저장된다.
 			// 그것을 뒤늦게라도 이렇게 고처야 한다.
-			
-			for (int genFileId : genFileIds) {			
+
+			for (int genFileId : genFileIds) {
 				genFileService.changeRelId(genFileId, id);
 			}
 		}
@@ -53,12 +54,16 @@ public class ArticleService {
 		return new ResultData("S-1", "추가되었습니다.", "id", id);
 
 	}
-	
+
 	public ResultData deleteArticle(int id) {
 
 		articleDao.deleteArticle(id);
 		
-		genFileService.deleteFiles("article", id);
+		List<GenFile> genFiles = genFileService.getGenFiles("article", id);
+		
+		if (genFiles.isEmpty() == false) {
+			genFileService.deleteFile(genFiles);			
+		}
 
 		return new ResultData("S-1", "삭제되었습니다.", "id", id);
 	}

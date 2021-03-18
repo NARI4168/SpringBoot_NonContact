@@ -136,11 +136,23 @@
 						<input type="file"
 							name="file__article__0__common__attachment__${inputNo}"
 							class="form-row-input w-full rounded-sm" />
-						<c:if test="${file != null && file.fileExtTypeCode == 'img'}">
-							<div class="img-box img-box-auto">
-								<img src="${file.forPrintUrl}">
+						<c:if test="${file != null}">
+							<div>
+								${file.fileName}(${file.fileSize}byte)
 							</div>
+							<div>
+								<label>
+									<input type="checkbox" name="deleteFile__article__${article.id}__common__attachment__${fileNo}" value="Y" />
+									<span>삭제</span>
+                            	</label>
+							</div>
+							<c:if test="${file.fileExtTypeCode == 'img'}">
+	                            <div class="img-box img-box-auto">
+	                                <img src="${file.forPrintUrl}" width="200" height="200">
+	                            </div>
+                            </c:if>
 						</c:if>
+						
 					</div>
 				</div>
 			</c:forEach>

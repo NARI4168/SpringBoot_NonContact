@@ -30,9 +30,11 @@
 
 
 		<c:forEach items="${articles}" var="article">
+		<c:set var="detailUrl" value="detail?id=${article.id}" />
+		
 			<div class="flex items-center mt-10 space-x-4 > *">
-				<span class="font-bold">NO. ${article.id}</span> <span
-					class="font-light text-gray-600">${article.regDate}</span>
+					<span class="font-light text-gray-600">${article.regDate}</span>
+				
 				<div class="flex-grow"></div>
 				<c:choose>
 					<c:when test="${article.boardId == 1}">
@@ -47,13 +49,15 @@
 			</div>
 
 			<div class="mt-2">
-				<a href="detail?id=${article.id}"
-					class="text-xl text-gray-900 font-bold hover:underline">${article.title}</a>
-				<p class="mt-2 text-gray-600">${article.body}</p>
+			<a href="${detailUrl}" class="text-l font-bold">NO. ${article.id}</a>
+				<a href="${detailUrl}"
+					class="text-2xl text-gray-900 font-bold hover:underline p-3">${article.title}</a>
+			<div>	<a href="${detailUrl}" class="mt-5 text-gray-600">${article.body}</a>
 				<div>
 					<c:if test="${article.extra__thumbImg != null}">
+					<a class="block  mt-4" href="${detailUrl}" >
 						<img src="${article.extra__thumbImg}" width="50" height="50"
-							alt="" />
+							alt="" /></a>
 					</c:if>
 				</div>
 			</div>
@@ -82,7 +86,7 @@
 	</div>
 
 </section>
-
+<!-- 
 <section class="page">
 	<div class="bg-white shadow-md rounded container mx-auto p-5 mt-8">
 
@@ -114,5 +118,5 @@
 
 
 	</div>
-</section>
+</section>-->
 <%@ include file="../part/mainLayoutFoot.jspf"%>
