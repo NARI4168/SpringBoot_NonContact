@@ -15,6 +15,7 @@ import com.NonContact.dto.Article;
 import com.NonContact.dto.Board;
 import com.NonContact.dto.ResultData;
 import com.NonContact.service.ArticleService;
+import com.NonContact.util.Util;
 
 
 @Controller
@@ -114,14 +115,15 @@ public class UsrArticleController {
 	// 게시물 수정
 	@RequestMapping("/usr/article/doModify")
 	@ResponseBody
-	public ResultData doModify(Integer id, String title, String body, HttpServletRequest req) {
+	public ResultData doModify(@RequestParam Map<String, Object> param, HttpServletRequest req) {
 
 		int loginedMemberId = (int)req.getAttribute("loginedMemberId");
+		int id = Util.getAsInt(param.get("id"), 0);
 
-		if (id == null) {
+		if (id == 0) {
 			return new ResultData("F-2", "id를 입력해주세요.");
 		}
-		if (title == null && body == null) {
+		if (Util.isEmpty(param.get("title"))&& Util.isEmpty(param.get("body")) ) {
 			return new ResultData("F-2", "title 또는 body가 입력되지 않았습니다.");
 		}
 
@@ -136,7 +138,7 @@ public class UsrArticleController {
 			return AuthChkRd;
 		}
 
-		return articleService.modifyArticle(id, body, title);
+		return articleService.modifyArticle(param);
 	}
 	
 	//댓글 추가

@@ -1,12 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page import="com.NonContact.util.Util" %>
 
 <%@ include file="../part/mainLayoutHead.jspf"%>
 
 <c:set var="fileInputMaxCount" value="5" />
 <script>
 	ArticleAdd__fileInputMaxCount = parseInt("${fileInputMaxCount}");
+	const articleId = parseInt("${article.id}");
 </script>
 
 <script>
@@ -34,7 +36,7 @@
 		var maxSize = maxSizeMb * 1024 * 1024;
 
 		for (let inputNo = 1; inputNo <= ArticleAdd__fileInputMaxCount; inputNo++) {
-			const input = form["file__article__0__common__attachment__"
+			const input = form["file__article__" + articleId + "__common__attachment__"
 					+ inputNo];
 
 			if (input.value) {
@@ -53,7 +55,7 @@
 			}
 
 			for (let inputNo = 1; inputNo <= ArticleAdd__fileInputMaxCount; inputNo++) {
-				const input = form["file__article__0__common__attachment__"
+				const input = form["file__article__" + articleId + "__common__attachment__"
 						+ inputNo];
 				input.value = '';
 			}
@@ -66,7 +68,7 @@
 			var needToUpload = false;
 
 			for (let inputNo = 1; inputNo <= ArticleAdd__fileInputMaxCount; inputNo++) {
-				const input = form["file__article__0__common__attachment__"
+				const input = form["file__article__" + articleId + "__common__attachment__"
 						+ inputNo];
 				if (input.value.length > 0) {
 					needToUpload = true;
@@ -134,38 +136,41 @@
 					</div>
 					<div class="lg:flex-grow">
 						<input type="file"
-							name="file__article__0__common__attachment__${inputNo}"
+							name="file__article__${article.id} __common__attachment__${inputNo}"
 							class="form-row-input w-full rounded-sm" />
 						<c:if test="${file != null}">
 							<div>
-								${file.fileName}(${file.fileSize}byte)
+								<a href="${file.forPrintUrl}" target="_blank"
+									class="text-blue-500 hover:underline" href="#">${file.fileName}</a>
+								( ${Util.numberFormat(file.fileSize)} Byte )
 							</div>
 							<div>
-								<label>
-									<input type="checkbox" name="deleteFile__article__${article.id}__common__attachment__${fileNo}" value="Y" />
-									<span>삭제</span>
-                            	</label>
+								<label> <input type="checkbox"
+									name="deleteFile__article__${article.id}__common__attachment__${fileNo}"
+									value="Y" /> <span>삭제</span>
+								</label>
 							</div>
 							<c:if test="${file.fileExtTypeCode == 'img'}">
-	                            <div class="img-box img-box-auto">
-	                                <img src="${file.forPrintUrl}" width="200" height="200">
-	                            </div>
-                            </c:if>
+								<div class="img-box img-box-auto">
+								<a class="inline-block" href="${file.forPrintUrl}" target="_blank" title="자세히 보기">
+									<img class="max-w-sm" src="${file.forPrintUrl}" width="200" height="200"></a>
+								</div>
+							</c:if>
 						</c:if>
-						
+
 					</div>
 				</div>
 			</c:forEach>
 
 			<div class="form-row flex flex-col lg:flex-row">
 				<div class="lg:flex lg:items-center lg:w-28">
-					<span>작성</span>
+					<span>수정</span>
 				</div>
 				<div class="lg:flex-grow">
 					<div class="btns">
 						<input type="submit"
 							class="btn-primary bg-blue-500 hover:bg-blue-dark text-white font-bold py-2 px-4 rounded"
-							value="작성"> <input onclick="history.back();"
+							value="수정"> <input onclick="history.back();"
 							type="button"
 							class="btn-info bg-red-500 hover:bg-red-dark text-white font-bold py-2 px-4 rounded"
 							value="취소">

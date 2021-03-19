@@ -20,6 +20,7 @@ import com.NonContact.dto.GenFile;
 import com.NonContact.dto.ResultData;
 import com.NonContact.service.ArticleService;
 import com.NonContact.service.GenFileService;
+import com.NonContact.util.Util;
 
 @Controller
 public class AdmArticleController extends BaseController {
@@ -114,14 +115,14 @@ public class AdmArticleController extends BaseController {
 
 		int newArticleId = (int) addArticleRd.getBody().get("id");
 
-		Map<String, MultipartFile> fileMap = mltipartRequest.getFileMap();
+		/*Map<String, MultipartFile> fileMap = mltipartRequest.getFileMap();
 
 		for (String fileInputName : fileMap.keySet()) {
 			MultipartFile multipartFile = fileMap.get(fileInputName);
 			if (multipartFile.isEmpty() == false) {
 				genFileService.save(multipartFile, newArticleId);
 			}
-		}
+		}*/
 
 		return msgAndReplace(req, String.format("%d번 게시물이 작성되었습니다.", newArticleId),
 				"../article/detail?id=" + newArticleId);
@@ -133,12 +134,11 @@ public class AdmArticleController extends BaseController {
 
 		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
 
-		//if (id == null) {
-		//	return msgAndBack(req, "id를 입력해주세요.");
-		//}
+		// if (id == null) {
+		// return msgAndBack(req, "id를 입력해주세요.");
+		// }
 		Article article = articleService.getArticle(id);
-System.out.println("1111111111111111111111111111111111111111");
-		System.out.println(id);
+
 		if (article == null) {
 			return msgAndBack(req, "해당 게시물이 존재하지 않습니다.");
 		}
@@ -175,18 +175,21 @@ System.out.println("1111111111111111111111111111111111111111");
 	}
 
 	@RequestMapping("/adm/article/doModify")
-	public String doModify(Integer id, String title, String body, HttpServletRequest req) {
+	public String doModify(@RequestParam Map<String, Object> param, HttpServletRequest req) {
 
 		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
+		int id = Util.getAsInt(param.get("id"), 0);
 
 		// if (id == null) {
 		// return msgAndBack(req, "id를 입력해주세요.");
-		// }
-		if (title == null && body == null) {
+		//}
+		
+		if (Util.isEmpty(param.get("title")) && Util.isEmpty(param.get("body"))) {
 			return msgAndBack(req, "title 또는 body가 입력되지 않았습니다.");
 		}
 
 		Article article = articleService.getArticle(id);
+		
 		if (article == null) {
 			return msgAndBack(req, "해당 게시물이 존재하지 않습니다.");
 		}
@@ -197,7 +200,7 @@ System.out.println("1111111111111111111111111111111111111111");
 			return msgAndBack(req, "권한이 없습니다.");
 		}
 
-		articleService.modifyArticle(id, body, title);
+		articleService.modifyArticle(param);
 
 		return msgAndReplace(req, String.format("%d번 게시물이 수정되었습니다.", id), "../article/detail?id=" + id);
 

@@ -48,8 +48,9 @@
 
 			<div class="mt-10">
 				<c:if test="${article.extra__thumbImg != null}">
-					<img src="${article.extra__thumbImg}" width="200" height="200"
-						alt="" />
+				<a class="inline-block" href="${article.extra__thumbImg}" target="_blank" title="자세히 보기">
+					<img  class="max-w-sm" src="${article.extra__thumbImg}" width="200" height="200"
+						alt="" /></a>
 				</c:if>
 			</div>
 		</div>

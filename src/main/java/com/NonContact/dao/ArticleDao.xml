@@ -74,8 +74,7 @@
 		</if>
 	</select>
 
-	<!-- public void addArticle(@Param(value = "title") String title, @Param(value 
-		= "body") String body); -->
+	<!-- public void addArticle(Map<String, Object> param); -->
 	<insert id="addArticle" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO article
 		SET regDate = NOW(),
@@ -96,8 +95,7 @@
 	</delete>
 
 
-	<!-- public void modifyArticle(@Param(value = "id") int id, @Param(value 
-		= "body") String body, @Param(value = "title") String title); -->
+	<!-- void modifyArticle(Map<String, Object> param);-->
 	<update id="modifyArticle">
 		UPDATE article
 		<set>
