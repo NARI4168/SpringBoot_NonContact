@@ -52,7 +52,7 @@ public class ArticleService {
 		List<GenFile> genFiles = genFileService.getGenFiles("article", id);
 
 		if (genFiles.isEmpty() == false) {
-			genFileService.deleteFile(genFiles);
+			genFileService.deleteGenFile(genFiles);
 		}
 
 		return new ResultData("S-1", "삭제되었습니다.", "id", id);
@@ -62,9 +62,7 @@ public class ArticleService {
 		
 		articleDao.modifyArticle(param);
 		
-		int id = Util.getAsInt(param.get("id"), 0);
-		
-		
+		int id = Util.getAsInt(param.get("id"), 0);	
 		
 		changeInputFileRelIds(param, id);
 		

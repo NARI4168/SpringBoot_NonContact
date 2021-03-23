@@ -170,6 +170,10 @@ public class AdmArticleController extends BaseController {
 
 		article.getExtraNotNull().put("file__common__attachment", filesMap);
 		req.setAttribute("article", article);
+		
+	/*	if (article == null) {
+			return msgAndBack(req, "존재하지 않는 게시물번호 입니다.");
+		}*/
 
 		return "adm/article/modify";
 	}

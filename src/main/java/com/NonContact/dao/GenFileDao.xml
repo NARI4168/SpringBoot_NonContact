@@ -34,12 +34,21 @@
 		SELECT *
 		FROM genFile
 		WHERE 1
-		AND relTypeCode = #{relTypeCode}
-		AND relId = #{relId}
-		AND typeCode =
-		#{typeCode}
-		AND type2Code = #{type2Code}
-		AND fileNo = #{fileNo}
+		<if test="relTypeCode != null">
+			AND relTypeCode = #{relTypeCode}
+		</if>
+		<if test="relId != null">
+			AND relId = #{relId}
+		</if>
+		<if test="typeCode != null">
+			AND typeCode = #{typeCode}
+		</if>
+		<if test="type2Code != null">
+			AND type2Code = #{type2Code}
+		</if>
+		<if test="fileNo != null">
+			AND fileNo = #{fileNo}
+		</if>
 	</select>
 
 
@@ -85,4 +94,15 @@
 		WHERE relTypeCode = #{relTypeCode}
 		AND relId = #{relId}
 	</delete>
+	
+	
+	<!-- GenFile getGenFileById(@Param("id") int id); -->
+	<select id="getGenFileById" resultType="GenFile">
+		SELECT *
+		FROM genFile
+		WHERE 1
+		AND id = #{id}
+	</select>
+	
+	
 </mapper>
