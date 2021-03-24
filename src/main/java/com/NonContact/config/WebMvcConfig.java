@@ -51,6 +51,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 		// Admin 필요
 		registry.addInterceptor(needToAdminInterceptor).addPathPatterns("/adm/**")
+				.excludePathPatterns("/adm/member/join").excludePathPatterns("/adm/member/doJoin")
 				.excludePathPatterns("/adm/member/doLogin").excludePathPatterns("/adm/member/login");
 
 		// 로그인 필요
@@ -64,7 +65,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 				.excludePathPatterns("/usr/member/findLoginId").excludePathPatterns("/usr/member/doFindLoginId")
 				.excludePathPatterns("/usr/member/findLoginPw").excludePathPatterns("/usr/member/doFindLoginPw")
 				.excludePathPatterns("/usr/file/test*").excludePathPatterns("/usr/file/doTest*")
-				.excludePathPatterns("/test/**").excludePathPatterns("/common/genFile/doDownload").excludePathPatterns("/error");
+				.excludePathPatterns("/test/**").excludePathPatterns("/common/genFile/doDownload")
+				.excludePathPatterns("/error");
 
 		// 로그인 상태에서 접속할 수 없는 URI 전부 기술
 		registry.addInterceptor(needToLogoutInterceptor).addPathPatterns("/adm/member/login")

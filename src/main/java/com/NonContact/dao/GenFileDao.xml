@@ -59,13 +59,25 @@
 		FROM genFile
 		WHERE 1
 		AND relTypeCode = #{relTypeCode}
-		AND relId = #{relId}
+		AND relId =
+		#{relId}
 		<if test="typeCode != null">
 			AND typeCode = #{typeCode}
 		</if>
 		<if test="type2Code != null">
 			AND type2Code = #{type2Code}
 		</if>
+	</select>
+
+
+	<select id="getGenFilesByRelTypeCodeAndRelId"
+		resultType="GenFile">
+		SELECT *
+		FROM genFile
+		WHERE 1
+		AND relTypeCode = #{relTypeCode}
+		AND relId = #{relId}
+		ORDER BY typeCode, type2Code, fileNo
 	</select>
 
 
@@ -94,8 +106,8 @@
 		WHERE relTypeCode = #{relTypeCode}
 		AND relId = #{relId}
 	</delete>
-	
-	
+
+
 	<!-- GenFile getGenFileById(@Param("id") int id); -->
 	<select id="getGenFileById" resultType="GenFile">
 		SELECT *
@@ -103,6 +115,27 @@
 		WHERE 1
 		AND id = #{id}
 	</select>
-	
-	
+
+
+	<select
+		id="getGenFilesRelTypeCodeAndRelIdsAndTypeCodeAndType2Code"
+		resultType="GenFile">
+		SELECT *
+		FROM genFile
+		WHERE 1
+		AND relId IN
+		<foreach item="relId" index="index" collection="relIds"
+			open="(" separator="," close=")">
+			#{relId}
+		</foreach>
+		AND relTypeCode = #{relTypeCode}
+		AND typeCode = #{typeCode}
+		AND
+		type2Code = #{type2Code}
+		ORDER BY relId, fileNo
+	</select>
+
+
+
+
 </mapper>

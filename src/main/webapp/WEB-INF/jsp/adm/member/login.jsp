@@ -36,8 +36,8 @@
 	<div class="bg-red-200 grid min-h-screen place-items-center">
 		<div class="w-11/12 p-12 bg-white sm:w-8/12 md:w-1/2 lg:w-5/12">
 			<h1 class="text-xl font-semibold">
-				This is the administrator's page. <br>
-				<span class="font-normal">sign in to continue</span>
+				This is the administrator's page. <br> <span
+					class="font-normal">sign in to continue</span>
 			</h1>
 			<form class="mt-6" action="doLogin" method="POST"
 				onsubmit="LoginForm__checkAndSubmit(this); return false;">
@@ -55,6 +55,11 @@
 				<button type="submit"
 					class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
 					Sign in</button>
+
+				<button type="button" onclick="location.href='join'"
+					class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
+					Sign up</button>
+
 				<p
 					class="flex justify-between inline-block mt-4 text-xs text-gray-500 cursor-pointer hover:text-black">Forgot
 					password?</p>

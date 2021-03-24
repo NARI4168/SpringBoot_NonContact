@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,11 +14,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
-import com.google.common.base.Joiner;
 import com.NonContact.dao.GenFileDao;
 import com.NonContact.dto.GenFile;
 import com.NonContact.dto.ResultData;
 import com.NonContact.util.Util;
+import com.google.common.base.Joiner;
 
 @Service
 public class GenFileService {
@@ -197,6 +198,24 @@ public class GenFileService {
 
 	public GenFile getGenFile(int id) {
 		return genFileDao.getGenFileById(id);
+	}
+	
+	public Map<Integer, Map<String, GenFile>> getFilesMapKeyRelIdAndFileNo(String relTypeCode, List<Integer> relIds,
+			String typeCode, String type2Code) {
+		List<GenFile> genFiles = genFileDao.getGenFilesRelTypeCodeAndRelIdsAndTypeCodeAndType2Code(relTypeCode, relIds,
+				typeCode, type2Code);
+		Map<String, GenFile> map = new HashMap<>();
+		Map<Integer, Map<String, GenFile>> rs = new LinkedHashMap<>();
+
+		for (GenFile genFile : genFiles) {
+			if (rs.containsKey(genFile.getRelId()) == false) {
+				rs.put(genFile.getRelId(), new LinkedHashMap<>());
+			}
+
+			rs.get(genFile.getRelId()).put(genFile.getFileNo() + "", genFile);
+		}
+
+		return rs;
 	}
 
 }

@@ -2,6 +2,7 @@ package com.NonContact.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -104,7 +105,19 @@ public class ArticleService {
 		int limitStart = (page - 1) * itemsInAPage;
 		int limitTake = itemsInAPage;
 
-		return articleDao.getForPrintArticles(boardId, searchKeywordType, searchKeyword, limitStart, limitTake);
+		List<Article> articles = articleDao.getForPrintArticles(boardId, searchKeywordType, searchKeyword, limitStart, limitTake);
+		List<Integer> articleIds = articles.stream().map(article -> article.getId()).collect(Collectors.toList());
+		Map<Integer, Map<String, GenFile>> filesMap = genFileService.getFilesMapKeyRelIdAndFileNo("article", articleIds, "common", "attachment");
+
+		for (Article article : articles) {
+			Map<String, GenFile> mapByFileNo = filesMap.get(article.getId());
+
+			if (mapByFileNo != null) {
+				article.getExtraNotNull().put("file__common__attachment", mapByFileNo);
+			}
+		}
+
+		return articles;
 	}
 
 	public Board getBoard(int boardId) {

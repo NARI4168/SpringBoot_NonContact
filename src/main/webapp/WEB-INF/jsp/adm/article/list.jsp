@@ -30,11 +30,15 @@
 
 
 		<c:forEach items="${articles}" var="article">
-		<c:set var="detailUrl" value="detail?id=${article.id}" />
-		
+			<c:set var="detailUrl" value="detail?id=${article.id}" />
+			<c:set var="thumbFileNo" value="${String.valueOf(1)}" />
+			<c:set var="thumbFile"
+				value="${article.extra.file__common__attachment[thumbFileNo]}" />
+			<c:set var="thumbUrl" value="${thumbFile.getForPrintUrl()}" />
+
 			<div class="flex items-center mt-10 space-x-4 > *">
-					<span class="font-light text-gray-600">${article.regDate}</span>
-				
+				<span class="font-light text-gray-600">${article.regDate}</span>
+
 				<div class="flex-grow"></div>
 				<c:choose>
 					<c:when test="${article.boardId == 1}">
@@ -49,39 +53,38 @@
 			</div>
 
 			<div class="mt-2">
-			<a href="${detailUrl}" class="text-l font-bold">NO. ${article.id}</a>
-				<a href="${detailUrl}"
+				<a href="${detailUrl}" class="text-l font-bold">NO.
+					${article.id}</a> <a href="${detailUrl}"
 					class="text-2xl text-gray-900 font-bold hover:underline p-3">${article.title}</a>
-			<div>	<a href="${detailUrl}" class="mt-5 text-gray-600">${article.body}</a>
 				<div>
-					<c:if test="${article.extra__thumbImg != null}">
-					<a class="block  mt-4" href="${detailUrl}" >
-						<img src="${article.extra__thumbImg}" width="50" height="50"
-							alt="" /></a>
-					</c:if>
+					<a href="${detailUrl}" class="mt-5 text-gray-600">${article.body}</a>
+					<div>
+						<c:if test="${thumbUrl != null}">
+							<a class="block  mt-4" href="${detailUrl}"> <img
+								src="${thumbUrl}" width="50" height="50" alt="" /></a>
+						</c:if>
+					</div>
 				</div>
-			</div>
 
-			<div class="flex items-center mt-4">
-				<a href="detail?id=${article.id}"
-					class="text-blue-500 hover:underline">자세히 보기</a> <a
-					href="modify?id=${article.id}"
-					class="ml-2 text-blue-500 hover:underline">수정</a> <a
-					onclick="if ( !confirm('삭제하시겠습니까?') ) return false;"
-					href="doDelete?id=${article.id}"
-					class="ml-2 text-blue-500 hover:underline">삭제</a>
-				<div class="flex-grow"></div>
+				<div class="flex items-center mt-4">
+					<a href="detail?id=${article.id}"
+						class="text-blue-500 hover:underline">자세히 보기</a> <a
+						href="modify?id=${article.id}"
+						class="ml-2 text-blue-500 hover:underline">수정</a> <a
+						onclick="if ( !confirm('삭제하시겠습니까?') ) return false;"
+						href="doDelete?id=${article.id}"
+						class="ml-2 text-blue-500 hover:underline">삭제</a>
+					<div class="flex-grow"></div>
 
-				<div>
-					<a href="#" class="flex items-center"> <img
-						src="https://mblogthumb-phinf.pstatic.net/MjAxODAxMTlfMjkg/MDAxNTE2MzQ5ODAyNzY5.JnY2p-t9mGEly1Y6F1Fvvm2udGo5aP_9fHRjDv_v5ikg.o1B5rIWM4SwMD0Oa2BuChU7Cl704DxIBdlLYfAEF4Hwg.JPEG.92_song/%25EC%2599%25B8%25EA%25B5%25AD%25EC%259D%25B8%25EB%25AC%25BC%25EA%25B0%2590%25EC%2584%25B1%25EC%2582%25AC%25EC%25A7%2584_(12).jpg?type=w800"
-						alt="avatar" class="mx-4 w-10 h-10 object-cover rounded-full">
-						<h1 class="text-gray-700 font-bold hover:underline">${article.writer}</h1>
-					</a>
+					<div>
+						<a href="#" class="flex items-center"> <img
+							src="https://mblogthumb-phinf.pstatic.net/MjAxODAxMTlfMjkg/MDAxNTE2MzQ5ODAyNzY5.JnY2p-t9mGEly1Y6F1Fvvm2udGo5aP_9fHRjDv_v5ikg.o1B5rIWM4SwMD0Oa2BuChU7Cl704DxIBdlLYfAEF4Hwg.JPEG.92_song/%25EC%2599%25B8%25EA%25B5%25AD%25EC%259D%25B8%25EB%25AC%25BC%25EA%25B0%2590%25EC%2584%25B1%25EC%2582%25AC%25EC%25A7%2584_(12).jpg?type=w800"
+							alt="avatar" class="mx-4 w-10 h-10 object-cover rounded-full">
+							<h1 class="text-gray-700 font-bold hover:underline">${article.writer}</h1>
+						</a>
 
+					</div>
 				</div>
-			</div>
-
 		</c:forEach>
 	</div>
 

@@ -23,8 +23,12 @@ public class AdmMemberController {
 
 	@RequestMapping("/adm/member/login")
 	public String login() {
-
 		return "adm/member/login";
+	}
+	
+	@RequestMapping("/adm/member/join")
+	public String Join() {
+		return "adm/member/join";
 	}
 
 	@RequestMapping("/adm/member/doJoin")
