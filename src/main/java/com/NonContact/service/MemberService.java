@@ -1,5 +1,6 @@
 package com.NonContact.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,32 @@ import com.NonContact.util.Util;
 public class MemberService {
 	@Autowired
 	private MemberDao memberDao;
+
+	// static 시작
+
+	public static String getAuthLevelName(Member member) {
+		switch (member.getAuthLevel()) {
+		case 7:
+			return "관리자";
+		case 3:
+			return "일반";
+		default:
+			return "유형정보없음";
+		}
+	}
+
+	public static String getAuthLevelNameColor(Member member) {
+		switch (member.getAuthLevel()) {
+		case 7:
+			return "red";
+		case 3:
+			return "gray";
+		default:
+			return "";
+		}
+	}
+
+	// static 끝
 
 	public ResultData join(Map<String, Object> param) {
 		memberDao.join(param);
@@ -33,22 +60,41 @@ public class MemberService {
 
 	}
 
-	public boolean isAdmin(int loginedMemberId) {
-
-		return loginedMemberId == 1;
-	}
+	/*
+	 * public boolean isAdmin(int loginedMemberId) {
+	 * 
+	 * return loginedMemberId == 1; }
+	 */
 
 	public Member getMember(int id) {
 		return memberDao.getMember(id);
 	}
 
 	public boolean isAdmin(Member searchForLoginId) {
-	
-		return isAdmin(searchForLoginId.getId());
+
+		return searchForLoginId.getAuthLevel() == 7;
 	}
 
 	public Member getMemberByAuthKey(String authKey) {
 		return memberDao.getMemberByAuthKey(authKey);
 	}
-	
+
+	public List<Member> getForPrintMembers(int authLevel, String searchKeywordType, String searchKeyword, int page, int itemsInAPage,
+			Map<String, Object> param) {
+		int limitStart = (page - 1) * itemsInAPage;
+		int limitTake = itemsInAPage;
+		
+		param.put("authLevel", authLevel);
+		param.put("searchKeywordType", searchKeywordType);
+		param.put("searchKeyword", searchKeyword);
+		param.put("limitStart", limitStart);
+		param.put("limitTake", limitTake);
+
+		return memberDao.getForPrintMembers(param);
+	}
+
+	public Member getMemberByAuthLevel(int authLevel) {
+		return memberDao.getMemberByAuthLevel(authLevel);
+	}
+
 }

@@ -1,5 +1,6 @@
 package com.NonContact.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +21,44 @@ import com.NonContact.util.Util;
 public class AdmMemberController {
 	@Autowired
 	private MemberService memberService;
+	
+	@RequestMapping("/adm/member/list")
+	public String showList(HttpServletRequest req, @RequestParam(defaultValue = "0") int authLevel,
+			String searchKeywordType, String searchKeyword, @RequestParam(defaultValue = "1") int page, @RequestParam Map<String, Object> param) {
+		
+		if (authLevel != 0) {			
+			Member member = memberService.getMemberByAuthLevel(authLevel);
+		}
+		
+		if (searchKeywordType != null) {
+			searchKeywordType = searchKeywordType.trim();
+		}
+
+		if (searchKeywordType == null || searchKeywordType.length() == 0) {
+			searchKeywordType = "name";
+		}
+
+		if (searchKeyword != null && searchKeyword.length() == 0) {
+			searchKeyword = null;
+		}
+
+		if (searchKeyword != null) {
+			searchKeyword = searchKeyword.trim();
+		}
+
+		if (searchKeyword == null) {
+			searchKeywordType = null;
+		}
+
+		int itemsInAPage = 3;
+
+		List<Member> members = memberService.getForPrintMembers(authLevel, searchKeywordType, searchKeyword, page,
+				itemsInAPage, param);
+
+		req.setAttribute("members", members);		
+
+		return "adm/member/list";
+	}
 
 	@RequestMapping("/adm/member/login")
 	public String login() {

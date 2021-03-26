@@ -171,9 +171,6 @@
 					<p onclick="history.back();"
 					class="flex justify-between inline-block mt-4 text-xs text-gray-500 cursor-pointer hover:text-black">돌아가기</p>
 
-
-
-
 			</form>
 		</div>
 	</div>

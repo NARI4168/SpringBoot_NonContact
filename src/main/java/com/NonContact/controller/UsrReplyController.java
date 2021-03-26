@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.NonContact.dto.Article;
+import com.NonContact.dto.Member;
 import com.NonContact.dto.Reply;
 import com.NonContact.dto.ResultData;
 import com.NonContact.service.ArticleService;
@@ -48,7 +49,7 @@ public class UsrReplyController {
 	@ResponseBody
 	public ResultData doDelete(Integer id, HttpServletRequest req) {
 
-		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
+		Member loginedMember = (Member)req.getAttribute("loginedMember");
 
 		if (id == null) {
 			return new ResultData("F-2", "id를 입력해주세요.");
@@ -59,7 +60,7 @@ public class UsrReplyController {
 			return new ResultData("F-1", "해당 댓글이 존재하지 않습니다.");
 		}
 
-		ResultData AuthChkRd = replyService.getAuthChkRd(reply, loginedMemberId);
+		ResultData AuthChkRd = replyService.getAuthChkRd(reply, loginedMember);
 
 		if (AuthChkRd.isFail()) {
 			return AuthChkRd;
@@ -73,7 +74,7 @@ public class UsrReplyController {
 	@ResponseBody
 	public ResultData doModify(Integer id, String body, HttpServletRequest req) {
 
-		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
+		Member loginedMember = (Member)req.getAttribute("loginedMember");
 
 		if (id == null) {
 			return new ResultData("F-2", "id를 입력해주세요.");
@@ -87,7 +88,7 @@ public class UsrReplyController {
 			return new ResultData("F-1", "해당 댓글이 존재하지 않습니다.");
 		}
 
-		ResultData AuthChkRd = replyService.getAuthChkRd(reply, loginedMemberId);
+		ResultData AuthChkRd = replyService.getAuthChkRd(reply, loginedMember);
 
 		if (AuthChkRd.isFail()) {
 			return AuthChkRd;

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.NonContact.dao.ReplyDao;
+import com.NonContact.dto.Member;
 import com.NonContact.dto.Reply;
 import com.NonContact.dto.ResultData;
 
@@ -26,11 +27,11 @@ public class ReplyService {
 		return replyDao.getReply(id);
 	}
 
-	public ResultData getAuthChkRd(Reply reply, int loginedMemberId) {
-		if(reply.getMemberId() == loginedMemberId) {
+	public ResultData getAuthChkRd(Reply reply, Member loginedMember) {
+		if(reply.getMemberId() == loginedMember.getId()) {
 			return new ResultData("S-1", "사용 권한이 확인 되었습니다.");
 		}
-		if (memberService.isAdmin(loginedMemberId)) {
+		if (memberService.isAdmin(loginedMember)) {
 			return new ResultData("S-1", "사용 권한이 확인 되었습니다.");
 		}
 		return new ResultData("F-6", "사용 권한이 없습니다.");

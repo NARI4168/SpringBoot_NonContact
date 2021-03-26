@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.NonContact.dto.Article;
 import com.NonContact.dto.Board;
+import com.NonContact.dto.Member;
 import com.NonContact.dto.ResultData;
 import com.NonContact.service.ArticleService;
 import com.NonContact.util.Util;
@@ -92,7 +93,7 @@ public class UsrArticleController {
 	@ResponseBody
 	public ResultData doDelete(Integer id, HttpServletRequest req) {
 
-		int loginedMemberId = (int)req.getAttribute("loginedMemberId");
+		Member loginedMember = (Member)req.getAttribute("loginedMember");
 
 		if (id == null) {
 			return new ResultData("F-2", "id를 입력해주세요.");
@@ -103,7 +104,7 @@ public class UsrArticleController {
 			return new ResultData("F-1", "해당 게시물이 존재하지 않습니다.");
 		}
 
-		ResultData AuthChkRd = articleService.getAuthChkRd(article, loginedMemberId);
+		ResultData AuthChkRd = articleService.getAuthChkRd(article, loginedMember);
 
 		if (AuthChkRd.isFail()) {
 			return AuthChkRd;
@@ -117,7 +118,7 @@ public class UsrArticleController {
 	@ResponseBody
 	public ResultData doModify(@RequestParam Map<String, Object> param, HttpServletRequest req) {
 
-		int loginedMemberId = (int)req.getAttribute("loginedMemberId");
+		Member loginedMember = (Member)req.getAttribute("loginedMember");
 		int id = Util.getAsInt(param.get("id"), 0);
 
 		if (id == 0) {
@@ -132,7 +133,7 @@ public class UsrArticleController {
 			return new ResultData("F-1", "해당 게시물이 존재하지 않습니다.");
 		}
 
-		ResultData AuthChkRd = articleService.getAuthChkRd(article, loginedMemberId);
+		ResultData AuthChkRd = articleService.getAuthChkRd(article, loginedMember);
 
 		if (AuthChkRd.isFail()) {
 			return AuthChkRd;

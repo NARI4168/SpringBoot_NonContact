@@ -64,7 +64,7 @@
 								src="${thumbUrl}" width="50" height="50" alt="" /></a>
 						</c:if>
 					</div>
-				</div>
+						
 
 				<div class="flex items-center mt-4">
 					<a href="detail?id=${article.id}"
@@ -85,8 +85,11 @@
 
 					</div>
 				</div>
+				</div>
+				</div>
 		</c:forEach>
 	</div>
+	
 
 </section>
 <!-- 

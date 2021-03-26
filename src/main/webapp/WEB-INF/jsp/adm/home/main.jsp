@@ -7,7 +7,7 @@
 <div class="flex flex-col items-center justify-center h-screen text-xl">
 
 
-	<a href="#1"
+	<a href=/adm/member/list
 		class="text-gray-700 font-bold py-3 px-6 hover:text-red-600"><i class="fas fa-users"> 회원 관리</i>
 		 </a> 
 	<a href="/adm/board/list"

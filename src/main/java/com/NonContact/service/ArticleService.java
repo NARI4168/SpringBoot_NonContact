@@ -11,6 +11,7 @@ import com.NonContact.dao.ArticleDao;
 import com.NonContact.dto.Article;
 import com.NonContact.dto.Board;
 import com.NonContact.dto.GenFile;
+import com.NonContact.dto.Member;
 import com.NonContact.dto.ResultData;
 import com.NonContact.util.Util;
 
@@ -84,11 +85,11 @@ public class ArticleService {
 		}
 	}
 
-	public ResultData getAuthChkRd(Article article, int loginedMemberId) {
-		if (article.getMemberId() == loginedMemberId) {
+	public ResultData getAuthChkRd(Article article, Member loginedMember) {
+		if (article.getMemberId() == loginedMember.getId()) {
 			return new ResultData("S-1", "사용 권한이 확인 되었습니다.");
 		}
-		if (memberService.isAdmin(loginedMemberId)) {
+		if (memberService.isAdmin(loginedMember)) {
 			return new ResultData("S-1", "사용 권한이 확인 되었습니다.");
 		}
 		return new ResultData("F-6", "사용 권한이 없습니다.");

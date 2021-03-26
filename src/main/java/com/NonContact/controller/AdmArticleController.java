@@ -11,12 +11,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
 import com.NonContact.dto.Article;
 import com.NonContact.dto.Board;
 import com.NonContact.dto.GenFile;
+import com.NonContact.dto.Member;
 import com.NonContact.dto.ResultData;
 import com.NonContact.service.ArticleService;
 import com.NonContact.service.GenFileService;
@@ -132,18 +132,15 @@ public class AdmArticleController extends BaseController {
 	@RequestMapping("/adm/article/doDelete")
 	public String doDelete(Integer id, HttpServletRequest req) {
 
-		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
-
-		// if (id == null) {
-		// return msgAndBack(req, "id를 입력해주세요.");
-		// }
+		Member loginedMember = (Member)req.getAttribute("loginedMember");
+		
 		Article article = articleService.getArticle(id);
 
 		if (article == null) {
 			return msgAndBack(req, "해당 게시물이 존재하지 않습니다.");
 		}
 
-		ResultData AuthChkRd = articleService.getAuthChkRd(article, loginedMemberId);
+		ResultData AuthChkRd = articleService.getAuthChkRd(article, loginedMember);
 
 		if (AuthChkRd.isFail()) {
 			return msgAndBack(req, "권한이 없습니다.");
@@ -181,7 +178,8 @@ public class AdmArticleController extends BaseController {
 	@RequestMapping("/adm/article/doModify")
 	public String doModify(@RequestParam Map<String, Object> param, HttpServletRequest req) {
 
-		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
+		Member loginedMember = (Member) req.getAttribute("loginedMember");
+
 		int id = Util.getAsInt(param.get("id"), 0);
 
 		// if (id == null) {
@@ -198,7 +196,7 @@ public class AdmArticleController extends BaseController {
 			return msgAndBack(req, "해당 게시물이 존재하지 않습니다.");
 		}
 
-		ResultData AuthChkRd = articleService.getAuthChkRd(article, loginedMemberId);
+		ResultData AuthChkRd = articleService.getAuthChkRd(article, loginedMember);
 
 		if (AuthChkRd.isFail()) {
 			return msgAndBack(req, "권한이 없습니다.");
