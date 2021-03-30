@@ -79,8 +79,7 @@ public class MemberService {
 		return memberDao.getMemberByAuthKey(authKey);
 	}
 
-	public List<Member> getForPrintMembers(int authLevel, String searchKeywordType, String searchKeyword, int page, int itemsInAPage,
-			Map<String, Object> param) {
+	public List<Member> getForPrintMembers(int authLevel, String searchKeywordType, String searchKeyword, int page, int itemsInAPage, Map<String, Object> param) {
 		int limitStart = (page - 1) * itemsInAPage;
 		int limitTake = itemsInAPage;
 		
@@ -93,7 +92,7 @@ public class MemberService {
 		return memberDao.getForPrintMembers(param);
 	}
 
-	public Member getMemberByAuthLevel(int authLevel) {
+	public List<Member> getMemberByAuthLevel(int authLevel) {
 		return memberDao.getMemberByAuthLevel(authLevel);
 	}
 

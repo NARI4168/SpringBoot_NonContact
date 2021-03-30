@@ -22,5 +22,5 @@ public interface MemberDao {
 
 	List<Member> getForPrintMembers(Map<String, Object> param);
 
-	Member getMemberByAuthLevel(int authLevel);
+	List<Member> getMemberByAuthLevel(int authLevel);
 }

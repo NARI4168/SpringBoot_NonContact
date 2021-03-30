@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.NonContact.dto.Article;
+import com.NonContact.dto.GenFile;
 import com.NonContact.dto.Member;
 import com.NonContact.dto.ResultData;
 import com.NonContact.service.MemberService;
@@ -22,12 +24,26 @@ public class AdmMemberController {
 	@Autowired
 	private MemberService memberService;
 	
+	@RequestMapping("/adm/member/detail")
+	public String showDetail(HttpServletRequest req, int id) {
+
+		Member member = memberService.getMember(id);
+
+		if (member == null) {
+			return Util.msgAndBack("해당 회원이 존재하지 않습니다.");
+		}
+
+		req.setAttribute("member", member);
+
+		return "adm/member/detail";
+	}
+	
 	@RequestMapping("/adm/member/list")
 	public String showList(HttpServletRequest req, @RequestParam(defaultValue = "0") int authLevel,
-			String searchKeywordType, String searchKeyword, @RequestParam(defaultValue = "1") int page, @RequestParam Map<String, Object> param) {
+			String searchKeywordType, String searchKeyword, @RequestParam(defaultValue = "1") int page,  @RequestParam Map<String, Object> param) {
 		
 		if (authLevel != 0) {			
-			Member member = memberService.getMemberByAuthLevel(authLevel);
+			List<Member> member = memberService.getMemberByAuthLevel(authLevel);
 		}
 		
 		if (searchKeywordType != null) {
@@ -50,7 +66,7 @@ public class AdmMemberController {
 			searchKeywordType = null;
 		}
 
-		int itemsInAPage = 3;
+		int itemsInAPage = 3;	
 
 		List<Member> members = memberService.getForPrintMembers(authLevel, searchKeywordType, searchKeyword, page,
 				itemsInAPage, param);
@@ -59,6 +75,7 @@ public class AdmMemberController {
 
 		return "adm/member/list";
 	}
+
 
 	@RequestMapping("/adm/member/login")
 	public String login() {
