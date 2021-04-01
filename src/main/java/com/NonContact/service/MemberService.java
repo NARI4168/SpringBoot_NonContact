@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.NonContact.dao.MemberDao;
+import com.NonContact.dto.GenFile;
 import com.NonContact.dto.Member;
 import com.NonContact.dto.ResultData;
 import com.NonContact.util.Util;
@@ -94,6 +95,17 @@ public class MemberService {
 
 	public List<Member> getMemberByAuthLevel(int authLevel) {
 		return memberDao.getMemberByAuthLevel(authLevel);
+	}
+
+	public ResultData deleteMember(int id) {
+
+		memberDao.deleteMember(id);
+
+		return new ResultData("S-1", "삭제되었습니다.", "id", id);
+	}
+
+	public Member getForPrintMember(int id) {
+		return memberDao.getForPrintMember(id);
 	}
 
 }

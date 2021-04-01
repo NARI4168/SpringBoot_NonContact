@@ -23,4 +23,8 @@ public interface MemberDao {
 	List<Member> getForPrintMembers(Map<String, Object> param);
 
 	List<Member> getMemberByAuthLevel(int authLevel);
+
+	void deleteMember(@Param("id") int id);
+
+	Member getForPrintMember(@Param("id") int id);
 }

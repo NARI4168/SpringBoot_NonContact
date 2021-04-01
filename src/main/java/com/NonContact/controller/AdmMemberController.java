@@ -20,7 +20,7 @@ import com.NonContact.service.MemberService;
 import com.NonContact.util.Util;
 
 @Controller
-public class AdmMemberController {
+public class AdmMemberController extends BaseController{
 	@Autowired
 	private MemberService memberService;
 	
@@ -174,6 +174,23 @@ public class AdmMemberController {
 
 		return Util.msgAndReplace(msg, "../member/login"); //로그인 화면으로 이동
 	}
+	
+	@RequestMapping("/adm/member/modify")
+	public String showModify(Integer id, HttpServletRequest req) {
+		if (id == null) {
+			return msgAndBack(req, "id를 입력해주세요.");
+		}
+
+		Member member = memberService.getForPrintMember(id);
+
+		req.setAttribute("member", member);
+
+		if (member == null) {
+			return msgAndBack(req, "존재하지 않는 회원번호 입니다.");
+		}
+
+		return "adm/member/modify";
+	}
 
 	@RequestMapping("/adm/member/doModify")
 	@ResponseBody
@@ -188,5 +205,25 @@ public class AdmMemberController {
 
 		return memberService.modifyMember(param);
 	}
+	
+		@RequestMapping("/adm/member/doDelete")
+		public String doDelete(Integer id, HttpServletRequest req) {
+
+			if (id == null) {
+				return msgAndBack(req, "id를 입력해주세요.");
+			}
+
+			Member member = memberService.getMember(id);
+
+			req.setAttribute("member", member);
+
+			if (member == null) {
+				return msgAndBack(req, "존재하지 않는 회원번호 입니다.");
+			}
+
+			memberService.deleteMember(id);
+
+			return msgAndReplace(req, String.format("%d번 회원이 삭제되었습니다.", id), "../member/list");
+		}
 
 }

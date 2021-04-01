@@ -82,7 +82,8 @@
 
 	<select id="getMemberByAuthLevel" resultType="Member">
 		SELECT *
-		FROM `member`
+		FROM
+		`member`
 		WHERE
 		authLevel = #{authLevel}
 	</select>
@@ -116,6 +117,19 @@
 	</select>
 
 
-
+	<delete id="deleteMember">
+		DELETE FROM `member`
+		WHERE id = #{id}
+	</delete>
+	
+	
+	<select id="getForPrintMember" resultType="Member">
+		SELECT *
+		FROM `member`
+		WHERE id
+		= #{id}
+	</select>
+	
+	
 
 </mapper>

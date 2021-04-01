@@ -6,19 +6,19 @@
 
 <section class="section-1">
 	<div
-		class="bg-white shadow-md rounded container text-center mx-auto p-8 mt-8">
+		class="bg-white shadow-md rounded container content-center text-center mx-auto p-8 mt-8">
 
-		<div class="items-center">
+		<div class="flex flex-col items-center justify-center">
 
+			<div class="place-items-center">
 
-			<div>
-				<a href="#"><img class="h-8 w-8 rounded-full object-cover"
+				<a href="#"><img class="rounded-full object-cover"
 					src="https://img.hankyung.com/photo/201903/AA.19067065.1.jpg"
-					alt="" /> </a>
+					width="150" height="150" alt="" /> </a>
 			</div>
 
 
-			<table>
+			<table class="mt-8 text-xl">
 
 				<tr>
 					<th scope="row">Profile</th>
@@ -70,36 +70,21 @@
 				</tr>
 			</table>
 		</div>
-		<!-- 	<div class="flex justify-between items-center mt-5">
 
-			<span class="font-light text-black">${article.regDate}</span>
-			<a
-				href="modify?id=${article.id}"
+
+		<div class="mt-8">
+
+			<a href="modify?id=${member.id}"
 				class="ml-2 text-blue-500 hover:underline">수정</a> <a
 				onclick="if ( !confirm('삭제하시겠습니까?') ) return false;"
-				href="doDelete?id=${article.id}"
-				class="ml-2 text-blue-500 hover:underline">삭제</a>
-			<div class="flex-grow"></div>
-			<div>
-				<a href="#" class="flex items-center"> <img
-					src="https://mblogthumb-phinf.pstatic.net/MjAxODAxMTlfMjkg/MDAxNTE2MzQ5ODAyNzY5.JnY2p-t9mGEly1Y6F1Fvvm2udGo5aP_9fHRjDv_v5ikg.o1B5rIWM4SwMD0Oa2BuChU7Cl704DxIBdlLYfAEF4Hwg.JPEG.92_song/%25EC%2599%25B8%25EA%25B5%25AD%25EC%259D%25B8%25EB%25AC%25BC%25EA%25B0%2590%25EC%2584%25B1%25EC%2582%25AC%25EC%25A7%2584_(12).jpg?type=w800"
-					alt="avatar" class="mx-4 w-10 h-10 object-cover rounded-full">
-					<h1 class="text-gray-700 font-bold hover:underline">${article.writer}</h1>
-				</a>
-			</div>
-		</div>-->
-		<!-- 
-		<div class="mt-10 px-4">
-			<p class="my-5 text-xl text-gray-800">${article.body}</p>
+				href="doDelete?id=${member.id}"
+				class="ml-2 text-blue-500 hover:underline">삭제</a>				
+				<a onclick="history.back();"
+							class="ml-2 text-blue-500 hover:underline cursor-pointer"
+						>뒤로가기</a>
 
-			<div class="mt-10">
-				<c:if test="${article.extra__thumbImg != null}">
-				<a class="inline-block" href="${article.extra__thumbImg}" target="_blank" title="자세히 보기">
-					<img  class="max-w-sm" src="${article.extra__thumbImg}" width="200" height="200"
-						alt="" /></a>
-				</c:if>
-			</div>
-		</div>-->
+		</div>
+
 
 	</div>
 </section>
