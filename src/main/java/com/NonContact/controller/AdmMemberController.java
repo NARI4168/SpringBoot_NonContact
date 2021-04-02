@@ -186,7 +186,7 @@ public class AdmMemberController extends BaseController{
 		req.setAttribute("member", member);
 
 		if (member == null) {
-			return msgAndBack(req, "존재하지 않는 회원번호 입니다.");
+			return msgAndBack(req, "존재하지 않는 회원번R 입니다.");
 		}
 
 		return "adm/member/modify";
@@ -223,7 +223,8 @@ public class AdmMemberController extends BaseController{
 
 			memberService.deleteMember(id);
 
-			return msgAndReplace(req, String.format("%d번 회원이 삭제되었습니다.", id), "../member/list");
+			return msgAndReplace(req, String.format("%d번 회원이 삭제되었습니다.", id), "../member/detail?id="+id);
+
 		}
 
 }
