@@ -1,9 +1,8 @@
 package com.NonContact.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,25 +43,23 @@ public class CommonGenFileController extends BaseController {
 	public ResponseEntity<Resource> downloadFile(int id, HttpServletRequest request) throws IOException {
 		GenFile genFile = genFileService.getGenFile(id);
 		String filePath = genFile.getFilePath(genFileDirPath);
-		Path path = Paths.get(filePath);
 
-		Resource resource = new InputStreamResource(Files.newInputStream(path));
+		Resource resource = new InputStreamResource(new FileInputStream(filePath));
 
 		// Try to determine file's content type
-		String contentType = null;
-		try {
-			contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
-		} catch (IOException ex) {
+		String contentType = request.getServletContext().getMimeType(new File(filePath).getAbsolutePath());
 
-		}
+	
 
 		// Fallback to the default content type if type could not be determined
 		if (contentType == null) {
 			contentType = "application/octet-stream";
 		}
 
-		return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
+		return ResponseEntity
+				.ok()
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + genFile.getOriginFileName() + "\"")
+				.contentType(MediaType.parseMediaType(contentType))
 				.body(resource);
 	}
 }

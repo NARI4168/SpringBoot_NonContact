@@ -197,13 +197,16 @@ public class AdmMemberController extends BaseController{
 	public ResultData doModify(@RequestParam Map<String, Object> param, HttpServletRequest req) {
 
 		if (param.isEmpty()) {
-			return new ResultData("F-1", "수정할 내용을 입력해주세요.");
+			return new ResultData("F-2", "수정할 정보를 입력해주세요.");
 		}
 
 		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
 		param.put("id", loginedMemberId);
 
+		memberService.modifyMember(param);
+		
 		return memberService.modifyMember(param);
+		
 	}
 	
 		@RequestMapping("/adm/member/doDelete")
