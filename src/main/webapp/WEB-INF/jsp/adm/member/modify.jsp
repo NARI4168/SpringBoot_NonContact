@@ -5,11 +5,14 @@
 
 <%@ include file="../part/mainLayoutHead.jspf"%>
 
-<c:set var="fileInputMaxCount" value="5" />
-<script>
-	ArticleModify__fileInputMaxCount = parseInt("${fileInputMaxCount}");
-	const articleId = parseInt("${article.id}");
+<script type="text/javascript">
+	function getSelectValue(frm) {
+		frm.textValue.value = frm.authlevel.options[frm.authlevel.selectedIndex].text;
+		frm.optionValue.value = frm.authlevel.options[frm.authlevel.selectedIndex].value;
+	}
 </script>
+
+
 
 <script>
 	MemberModify__submited = false;
@@ -85,7 +88,8 @@
 				</div>
 				<div class="lg:flex-grow">
 					<input type="password" name="loginPw" autofocus="autofocus"
-						class="form-row-input w-full rounded-sm" placeholder="로그인비밀번호를 입력해주세요." />						
+						class="form-row-input w-full rounded-sm"
+						placeholder="로그인비밀번호를 입력해주세요." required />
 				</div>
 			</div>
 			<div class="form-row flex flex-col lg:flex-row">
@@ -94,7 +98,8 @@
 				</div>
 				<div class="lg:flex-grow">
 					<input type="password" name="loginPwConfirm" autofocus="autofocus"
-						class="form-row-input w-full rounded-sm" placeholder="로그인비밀번호 확인을 입력해주세요." />						
+						class="form-row-input w-full rounded-sm"
+						placeholder="로그인비밀번호 확인을 입력해주세요." required />
 				</div>
 			</div>
 			<div class="form-row flex flex-col lg:flex-row">
@@ -102,8 +107,9 @@
 					<span>이름</span>
 				</div>
 				<div class="lg:flex-grow">
-					<input value="${member.name}" type="text" name="name" autofocus="autofocus"
-						class="form-row-input w-full rounded-sm" placeholder="이름을 입력해주세요." />						
+					<input value="${member.name}" type="text" name="name"
+						autofocus="autofocus" class="form-row-input w-full rounded-sm"
+						placeholder="이름을 입력해주세요." />
 				</div>
 			</div>
 			<div class="form-row flex flex-col lg:flex-row">
@@ -111,8 +117,9 @@
 					<span>별명</span>
 				</div>
 				<div class="lg:flex-grow">
-					<input value="${member.nickname}" type="text" name="nickname" autofocus="autofocus"
-						class="form-row-input w-full rounded-sm" placeholder="별명을 입력해주세요." />						
+					<input value="${member.nickname}" type="text" name="nickname"
+						autofocus="autofocus" class="form-row-input w-full rounded-sm"
+						placeholder="별명을 입력해주세요." />
 				</div>
 			</div>
 			<div class="form-row flex flex-col lg:flex-row">
@@ -120,8 +127,9 @@
 					<span>이메일</span>
 				</div>
 				<div class="lg:flex-grow">
-					<input value="${member.email}" type="email" name="email" autofocus="autofocus"
-						class="form-row-input w-full rounded-sm" placeholder="이메일을 입력해주세요." />						
+					<input value="${member.email}" type="email" name="email"
+						autofocus="autofocus" class="form-row-input w-full rounded-sm"
+						placeholder="이메일을 입력해주세요." />
 				</div>
 			</div>
 			<div class="form-row flex flex-col lg:flex-row">
@@ -129,8 +137,10 @@
 					<span>전화번호</span>
 				</div>
 				<div class="lg:flex-grow">
-					<input value="${member.cellphoneNum}" type="text" name="cellphoneNum" autofocus="autofocus"
-						class="form-row-input w-full rounded-sm" placeholder="전화번호를 입력해주세요." />						
+					<input value="${member.cellphoneNum}" type="text"
+						name="cellphoneNum" autofocus="autofocus"
+						class="form-row-input w-full rounded-sm"
+						placeholder="전화번호를 입력해주세요." />
 				</div>
 			</div>
 			<div class="form-row flex flex-col lg:flex-row">
@@ -138,104 +148,20 @@
 					<span>권한레벨</span>
 				</div>
 				<div class="lg:flex-grow">
-					<select class="form-row-input w-full rounded-sm select-auth-level">
+					<input type="text" name="optionValue"/> 
+					<input type="text" name="textValue"/> 
+						<select name="authlevel" onChange="getSelectValue(this);" class="form-row-input w-full rounded-sm">
 						<option value="3">일반회원</option>
 						<option value="7">관리자</option>
 					</select>
-					<script>
+					<!-- <script>
 					const memberAuthLevel = parseInt("${member.authLevel}");
 					</script>
 					<script>
-						$('.section-1 .select-auth-level').val(memberAuthLevel);
-					</script>						
+						$("select[name=authlevel]").val();
+					</script>			-->
 				</div>
 			</div>
-			<div class="form-row flex flex-col lg:flex-row">
-				<div class="lg:flex lg:items-center lg:w-28">
-					<span>수정</span>
-				</div>
-				<div class="lg:flex-grow">
-					<div class="btns">
-						<input type="submit"
-							class="btn-primary bg-blue-500 hover:bg-blue-dark text-white font-bold py-2 px-4 rounded"
-							value="수정">
-						<input onclick="history.back();" type="button"
-							class="btn-info bg-red-500 hover:bg-red-dark text-white font-bold py-2 px-4 rounded"
-							value="취소">
-					</div>
-				</div>
-			</div>
-		</form>
-	</div>
-</section>
-<!--  
-<section class="section-1">
-	<div class="bg-white shadow-md rounded container mx-auto p-8 mt-8">
-
-		<form action="doModify" method="POST" enctype="multipart/form-data"
-			onsubmit="ArticleModify__checkAndSubmit(this); return false;">
-			<input type="hidden" name="genFileIdsStr" value="" /> <input
-				type="hidden" name="id" value="${article.id}" /> <input
-				type="hidden" name="boardId" value="${article.boardId}" />
-
-			<div class="form-row flex flex-col lg:flex-row">
-				<div class="lg:flex lg:items-center lg:w-28">
-					<span>제목</span>
-				</div>
-				<div class="lg:flex-grow">
-					<input value="${article.title}" type="text" name="title"
-						autofocus="autofocus" class="form-row-input w-full rounded-sm" />
-				</div>
-			</div>
-
-			<div class="form-row flex flex-col lg:flex-row">
-				<div class="lg:flex lg:items-center lg:w-28">
-					<span>내용</span>
-				</div>
-				<div class="lg:flex-grow">
-					<textarea name="body" class="form-row-input w-full rounded-sm"
-						placeholder="내용을 입력해주세요.">${article.body}</textarea>
-				</div>
-			</div>
-			<c:forEach begin="1" end="${fileInputMaxCount}" var="inputNo">
-				<c:set var="fileNo" value="${String.valueOf(inputNo)}" />
-				<c:set var="file"
-					value="${article.extra.file__common__attachment[fileNo]}" />
-				<div class="form-row flex flex-col lg:flex-row">
-					<div class="lg:flex lg:items-center lg:w-28">
-						<span>첨부파일 ${inputNo}</span>
-					</div>
-					<div class="lg:flex-grow input-file-wrap">
-						<input type="file"
-							name="file__article__${article.id} __common__attachment__${inputNo}"
-							class="form-row-input w-full rounded-sm" />
-						<c:if test="${file != null}">
-							<div>
-								<a href="${file.downloadUrl}" target="_blank"
-									class="text-blue-500 hover:underline" href="#">${file.originFileName}</a>
-								( ${Util.numberFormat(file.fileSize)} Byte )
-							</div>
-							<div>
-								<label> <input
-									onclick="$(this).closest('.input-file-wrap').find(' > input[type=file]').val('')"
-									type="checkbox"
-									name="deleteFile__article__${article.id}__common__attachment__${fileNo}"
-									value="Y" /> <span>삭제</span>
-								</label>
-							</div>
-							<c:if test="${file.fileExtTypeCode == 'img'}">
-								<div class="img-box img-box-auto">
-									<a class="inline-block" href="${file.forPrintUrl}"
-										target="_blank" title="자세히 보기"> <img class="max-w-sm"
-										src="${file.forPrintUrl}" width="200" height="200"></a>
-								</div>
-							</c:if>
-						</c:if>
-
-					</div>
-				</div>
-			</c:forEach>
-
 			<div class="form-row flex flex-col lg:flex-row">
 				<div class="lg:flex lg:items-center lg:w-28">
 					<span>수정</span>
@@ -253,6 +179,7 @@
 			</div>
 		</form>
 	</div>
-</section>-->
+</section>
+
 
 <%@ include file="../part/mainLayoutFoot.jspf"%>

@@ -56,6 +56,9 @@
 			<if test="email != null">
 				email = #{email},
 			</if>
+			<if test="authKey != null">
+				authKey = #{authKey},
+			</if>
 		</set>
 		WHERE id = #{id}
 	</update>

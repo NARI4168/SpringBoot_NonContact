@@ -12,18 +12,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.NonContact.dto.Article;
-import com.NonContact.dto.GenFile;
 import com.NonContact.dto.Member;
 import com.NonContact.dto.ResultData;
 import com.NonContact.service.MemberService;
 import com.NonContact.util.Util;
 
 @Controller
-public class AdmMemberController extends BaseController{
+public class AdmMemberController extends BaseController {
 	@Autowired
 	private MemberService memberService;
-	
+
 	@RequestMapping("/adm/member/detail")
 	public String showDetail(HttpServletRequest req, int id) {
 
@@ -37,15 +35,16 @@ public class AdmMemberController extends BaseController{
 
 		return "adm/member/detail";
 	}
-	
+
 	@RequestMapping("/adm/member/list")
 	public String showList(HttpServletRequest req, @RequestParam(defaultValue = "0") int authLevel,
-			String searchKeywordType, String searchKeyword, @RequestParam(defaultValue = "1") int page,  @RequestParam Map<String, Object> param) {
-		
-		if (authLevel != 0) {			
+			String searchKeywordType, String searchKeyword, @RequestParam(defaultValue = "1") int page,
+			@RequestParam Map<String, Object> param) {
+
+		if (authLevel != 0) {
 			List<Member> member = memberService.getMemberByAuthLevel(authLevel);
 		}
-		
+
 		if (searchKeywordType != null) {
 			searchKeywordType = searchKeywordType.trim();
 		}
@@ -66,22 +65,21 @@ public class AdmMemberController extends BaseController{
 			searchKeywordType = null;
 		}
 
-		int itemsInAPage = 3;	
+		int itemsInAPage = 3;
 
 		List<Member> members = memberService.getForPrintMembers(authLevel, searchKeywordType, searchKeyword, page,
 				itemsInAPage, param);
 
-		req.setAttribute("members", members);		
+		req.setAttribute("members", members);
 
 		return "adm/member/list";
 	}
-
 
 	@RequestMapping("/adm/member/login")
 	public String login() {
 		return "adm/member/login";
 	}
-	
+
 	@RequestMapping("/adm/member/join")
 	public String Join() {
 		return "adm/member/join";
@@ -129,7 +127,7 @@ public class AdmMemberController extends BaseController{
 
 	@RequestMapping("/adm/member/doLogin")
 	@ResponseBody
-	public String doLogin(String loginId, String loginPw,String redirectUrl, HttpSession session) {
+	public String doLogin(String loginId, String loginPw, String redirectUrl, HttpSession session) {
 
 		if (loginId == null) {
 			return Util.msgAndBack("loginId를 입력해주세요.");
@@ -156,25 +154,25 @@ public class AdmMemberController extends BaseController{
 		session.setAttribute("loginedMemberNickname", searchForLoginId.getNickname());
 
 		String msg = String.format("%s님 환영합니다.", searchForLoginId.getNickname());
-	
+
 		redirectUrl = Util.ifEmpty(redirectUrl, "../home/main");
-		
-		return Util.msgAndReplace(msg, redirectUrl); 
+
+		return Util.msgAndReplace(msg, redirectUrl);
 
 	}
 
 	@RequestMapping("/adm/member/doLogout")
 	@ResponseBody
 	public String doLogout(HttpSession session) {
-		
-		String Nickname = (String)session.getAttribute("loginedMemberNickname");
-	
+
+		String Nickname = (String) session.getAttribute("loginedMemberNickname");
+
 		String msg = String.format(Nickname + "님 안녕히가세요.");
 		session.removeAttribute("loginedMemberId");
 
-		return Util.msgAndReplace(msg, "../member/login"); //로그인 화면으로 이동
+		return Util.msgAndReplace(msg, "../member/login"); // 로그인 화면으로 이동
 	}
-	
+
 	@RequestMapping("/adm/member/modify")
 	public String showModify(Integer id, HttpServletRequest req) {
 		if (id == null) {
@@ -186,7 +184,7 @@ public class AdmMemberController extends BaseController{
 		req.setAttribute("member", member);
 
 		if (member == null) {
-			return msgAndBack(req, "존재하지 않는 회원번R 입니다.");
+			return msgAndBack(req, "존재하지 않는 회원번호 입니다.");
 		}
 
 		return "adm/member/modify";
@@ -194,40 +192,55 @@ public class AdmMemberController extends BaseController{
 
 	@RequestMapping("/adm/member/doModify")
 	@ResponseBody
-	public ResultData doModify(@RequestParam Map<String, Object> param, HttpServletRequest req) {
+	public String doModify(@RequestParam Map<String, Object> param, HttpServletRequest req) {
+
+		Member loginedMember = (Member) req.getAttribute("loginedMember");
+		int id = Util.getAsInt(param.get("id"), 0);
+		Member member = memberService.getMember(id);
 
 		if (param.isEmpty()) {
-			return new ResultData("F-2", "수정할 정보를 입력해주세요.");
+			return msgAndBack(req, "수정할 정보를 입력해주세요.");
+		}
+		if (member == null) {
+			return msgAndBack(req, "해당 회원이 존재하지 않습니다.");
+		} else {
+			id = member.getId();
 		}
 
-		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
-		param.put("id", loginedMemberId);
+		ResultData AuthChkRd = memberService.getAuthChkRd(member, loginedMember);
+
+		if (AuthChkRd.isFail()) {
+			return msgAndBack(req, "권한이 없습니다.");
+		}
 
 		memberService.modifyMember(param);
-		
-		return memberService.modifyMember(param);
-		
+
+		String msg = String.format("%d번 회원정보가 수정되었습니다.", id);
+
+		return Util.msgAndReplace(msg, "../member/detail?id=" + id);
+
 	}
-	
-		@RequestMapping("/adm/member/doDelete")
-		public String doDelete(Integer id, HttpServletRequest req) {
 
-			if (id == null) {
-				return msgAndBack(req, "id를 입력해주세요.");
-			}
+	@RequestMapping("/adm/member/doDelete")
+	public String doDelete(Integer id, HttpServletRequest req) {
 
-			Member member = memberService.getMember(id);
+		Member loginedMember = (Member) req.getAttribute("loginedMember");
 
-			req.setAttribute("member", member);
+		Member member = memberService.getMember(id);
 
-			if (member == null) {
-				return msgAndBack(req, "존재하지 않는 회원번호 입니다.");
-			}
-
-			memberService.deleteMember(id);
-
-			return msgAndReplace(req, String.format("%d번 회원이 삭제되었습니다.", id), "../member/detail?id="+id);
-
+		if (member == null) {
+			return msgAndBack(req, "해당 회원이 존재하지 않습니다.");
 		}
+
+		ResultData AuthChkRd = memberService.getAuthChkRd(member, loginedMember);
+
+		if (AuthChkRd.isFail()) {
+			return msgAndBack(req, "권한이 없습니다.");
+		}
+
+		memberService.deleteMember(id);
+		
+		return msgAndReplace(req, String.format("%d번 게시물이 삭제되었습니다.", id), "../member/list");
+	}
 
 }

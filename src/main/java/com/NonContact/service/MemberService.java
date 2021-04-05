@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.NonContact.dao.MemberDao;
-import com.NonContact.dto.GenFile;
 import com.NonContact.dto.Member;
 import com.NonContact.dto.ResultData;
 import com.NonContact.util.Util;
@@ -80,10 +79,11 @@ public class MemberService {
 		return memberDao.getMemberByAuthKey(authKey);
 	}
 
-	public List<Member> getForPrintMembers(int authLevel, String searchKeywordType, String searchKeyword, int page, int itemsInAPage, Map<String, Object> param) {
+	public List<Member> getForPrintMembers(int authLevel, String searchKeywordType, String searchKeyword, int page,
+			int itemsInAPage, Map<String, Object> param) {
 		int limitStart = (page - 1) * itemsInAPage;
 		int limitTake = itemsInAPage;
-		
+
 		param.put("authLevel", authLevel);
 		param.put("searchKeywordType", searchKeywordType);
 		param.put("searchKeyword", searchKeyword);
@@ -99,13 +99,25 @@ public class MemberService {
 
 	public ResultData deleteMember(int id) {
 
-		memberDao.deleteMember(id);
+	 	memberDao.deleteMember(id);
 
 		return new ResultData("S-1", "삭제되었습니다.", "id", id);
 	}
 
 	public Member getForPrintMember(int id) {
 		return memberDao.getForPrintMember(id);
+	}
+
+	public ResultData getAuthChkRd(Member member, Member loginedMember) {
+
+		if (member.getId() == loginedMember.getId()) {
+			return new ResultData("S-1", "사용 권한이 확인 되었습니다.");
+		}
+		
+		if (isAdmin(loginedMember)) {
+			return new ResultData("S-1", "사용 권한이 확인 되었습니다.");
+		}
+		return new ResultData("F-6", "사용 권한이 없습니다.");
 	}
 
 }
