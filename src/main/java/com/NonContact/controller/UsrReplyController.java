@@ -6,7 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.NonContact.dto.Article;
@@ -23,7 +24,7 @@ public class UsrReplyController {
 	@Autowired
 	private ArticleService articleService;
 
-	@RequestMapping("/usr/reply/list")
+	@GetMapping("/usr/reply/list")
 	@ResponseBody
 	public ResultData showList(String relTypeCode, Integer relId) {
 		if (relId == null) {
@@ -45,7 +46,7 @@ public class UsrReplyController {
 	}
 
 	// 댓글 삭제
-	@RequestMapping("/usr/reply/doDelete")
+	@PostMapping("/usr/reply/doDelete")
 	@ResponseBody
 	public ResultData doDelete(Integer id, HttpServletRequest req) {
 
@@ -70,7 +71,7 @@ public class UsrReplyController {
 	}
 
 	// 댓글 수정
-	@RequestMapping("/usr/reply/doModify")
+	@PostMapping("/usr/reply/doModify")
 	@ResponseBody
 	public ResultData doModify(Integer id, String body, HttpServletRequest req) {
 

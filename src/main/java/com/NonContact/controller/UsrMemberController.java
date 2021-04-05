@@ -7,7 +7,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -21,7 +22,7 @@ public class UsrMemberController {
 	@Autowired
 	private MemberService memberService;
 
-	@RequestMapping("/usr/member/doJoin")
+	@PostMapping("/usr/member/doJoin")
 	@ResponseBody
 	public ResultData doJoin(@RequestParam Map<String, Object> param) {
 		if (param.get("loginId") == null) {
@@ -57,7 +58,7 @@ public class UsrMemberController {
 		return memberService.join(param);
 	}
 
-	@RequestMapping("/usr/member/memberByAuthKey")
+	@GetMapping("/usr/member/memberByAuthKey")
 	@ResponseBody
 	public ResultData memberByAuthKey(String authKey) {
 		if (authKey == null) {
@@ -68,7 +69,7 @@ public class UsrMemberController {
 		return new ResultData("S-1", String.format("유효한 회원입니다."), "member", searchForLoginId);
 	}
 
-	@RequestMapping("/usr/member/authKey")
+	@GetMapping("/usr/member/authKey")
 	@ResponseBody
 	public ResultData showAuthKey(String loginId, String loginPw) {
 		if (loginId == null) {
@@ -93,13 +94,13 @@ public class UsrMemberController {
 				"nickname", searchForLoginId.getNickname());
 	}
 
-	@RequestMapping("/usr/member/login")
+	@GetMapping("/usr/member/login")
 	public String login() {
 
 		return "usr/member/login";
 	}
 
-	@RequestMapping("/usr/member/doLogin")
+	@PostMapping("/usr/member/doLogin")
 	@ResponseBody
 	public ResultData doLogin(String loginId, String loginPw,String redirectUrl, HttpSession session) {
 
@@ -129,7 +130,7 @@ public class UsrMemberController {
 
 	}
 
-	@RequestMapping("/usr/member/doLogout")
+	@PostMapping("/usr/member/doLogout")
 	@ResponseBody
 	public ResultData doLogout(HttpSession session) {
 
@@ -137,7 +138,7 @@ public class UsrMemberController {
 		return new ResultData("S-3", String.format("안녕히가세요."));
 	}
 
-	@RequestMapping("/usr/member/doModify")
+	@PostMapping("/usr/member/doModify")
 	@ResponseBody
 	public ResultData doModify(@RequestParam Map<String, Object> param, HttpServletRequest req) {
 
