@@ -41,7 +41,7 @@ public class ArticleService {
 
 		int id = Util.getAsInt(param.get("id"), 0);
 		
-		changeInputFileRelIds(param, id);
+		genFileService.changeInputFileRelIds(param, id);
 
 		return new ResultData("S-1", "추가되었습니다.", "id", id);
 
@@ -66,24 +66,12 @@ public class ArticleService {
 		
 		int id = Util.getAsInt(param.get("id"), 0);	
 		
-		changeInputFileRelIds(param, id);
+		//genFileService.changeInputFileRelIds(param, id);
 		
 		return new ResultData("S-2", String.format("%d번 게시물이 수정되었습니다.", id), "id", id);
 
 	}
 	
-	private void changeInputFileRelIds(Map<String, Object> param, int id) {
-	
-		String genFileIdsStr = Util.ifEmpty((String)param.get("genFileIdsStr"), null);
-
-		if ( genFileIdsStr != null ) {
-			List<Integer> genFileIds = Util.getListDividedBy(genFileIdsStr, ",");
-
-			for (int genFileId : genFileIds) {
-				genFileService.changeRelId(genFileId, id);
-			}
-		}
-	}
 
 	public ResultData getAuthChkRd(Article article, Member loginedMember) {
 		if (article.getMemberId() == loginedMember.getId()) {

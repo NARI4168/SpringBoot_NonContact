@@ -2,9 +2,47 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="../part/head.jspf"%>
 
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+
 
 <script>
 	const JoinForm__checkAndSubmitDone = false;
+	
+	let JoinForm__validLoginId = '';
+	
+	// 로그인 아이디 중복체크 함수
+	function JoinForm__checkLoginIdDup() {
+		const form = $('.formLogin').get(0);
+		
+		form.loginId.value = form.loginId.value.trim();
+		
+		if (form.loginId.value.length == 0) {
+			return;
+		}
+		$.get(
+			'getLoginIdDup',
+			{
+				loginId:form.loginId.value
+			},
+			function(data) {
+				let colorClass = 'text-green-500';
+				if ( data.fail ) {
+					colorClass = 'text-red-500';
+				}
+				
+				$('.loginIdInputMsg').html("<span class='" + colorClass + "'>" + data.msg + "</span>");
+				if ( data.fail ) {
+					form.loginId.focus();
+				}else
+			    {
+					JoinForm__validLoginId = data.body.loginId;
+			    }
+			},
+			'json'
+		);
+	}
+	
 	function JoinForm__checkAndSubmit(form) {
 		if (JoinForm__checkAndSubmitDone) {
 			return;
@@ -16,6 +54,12 @@
 			alert('아이디를 입력해주세요.');
 			form.loginId.focus();
 
+			return;
+		}
+		
+		if ( form.loginId.value != JoinForm__validLoginId ) {
+			alert('로그인아이디 중복체크를해주세요.');
+			form.loginId.focus();
 			return;
 		}
 
@@ -71,13 +115,20 @@
 		form.submit();
 		JoinForm__checkAndSubmitDone = true;
 	}
+	
+	$(function() {
+		$('.inputLoginId').change(function() {
+			JoinForm__checkLoginIdDup();
+		});
+		$('.inputLoginId').keyup(_.debounce(JoinForm__checkLoginIdDup, 1000));
+	});
 </script>
 
 <section class="section-join">
 	<div class="bg-red-200 grid min-h-screen place-items-center">
 		<div class="w-11/12 p-12 bg-white sm:w-8/12 md:w-1/2 lg:w-5/12">
 			<h1 class="text-2xl flex justify-center font-semibold">ADMIN</h1>
-			<form class="mt-6" action="doJoin" method="POST"
+			<form class="formLogin mt-6" action="doJoin" method="POST"
 				onsubmit="JoinForm__checkAndSubmit(this); return false;">
 				<input type="hidden" name="redirectUrl" value="${param.redirectUrl}" />
 
@@ -87,9 +138,12 @@
 					</div>
 					<div class="p-1 md:flex-grow">
 						<input
-							class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+							class="inputLoginId shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker"
 							autofocus="autofocus" type="text" placeholder="아이디를 입력해주세요."
 							name="loginId" maxlength="20" required />
+
+						<div class="loginIdInputMsg"></div>
+
 					</div>
 				</div>
 
@@ -109,13 +163,13 @@
 						<span>비밀번호 확인</span>
 					</div>
 					<div class="p-1 md:flex-grow">
-						<input type="password" name="loginPwConfirm" placeholder="********"
-							autofocus="autofocus"
+						<input type="password" name="loginPwConfirm"
+							placeholder="********" autofocus="autofocus"
 							class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner"
 							required />
 					</div>
 				</div>
-				
+
 				<div class="flex flex-col mb-4 md:flex-row">
 					<div class="p-1 md:w-36 md:flex md:items-center">
 						<span>이름</span>
@@ -127,7 +181,7 @@
 							required />
 					</div>
 				</div>
-				
+
 				<div class="flex flex-col mb-4 md:flex-row">
 					<div class="p-1 md:w-36 md:flex md:items-center">
 						<span>닉네임</span>
@@ -139,7 +193,7 @@
 							required />
 					</div>
 				</div>
-				
+
 				<div class="flex flex-col mb-4 md:flex-row">
 					<div class="p-1 md:w-36 md:flex md:items-center">
 						<span>이메일</span>
@@ -151,24 +205,24 @@
 							required />
 					</div>
 				</div>
-				
+
 				<div class="flex flex-col mb-4 md:flex-row">
 					<div class="p-1 md:w-36 md:flex md:items-center">
 						<span>휴대전화번호</span>
 					</div>
 					<div class="p-1 md:flex-grow">
-						<input type="tel" name="cellphoneNum" placeholder="휴대전화번호를 입력해주세요.(- 없이 입력해주세요.)"
-							autofocus="autofocus"
+						<input type="tel" name="cellphoneNum"
+							placeholder="휴대전화번호를 입력해주세요.(- 없이 입력해주세요.)" autofocus="autofocus"
 							class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner"
 							required />
 					</div>
 				</div>
-				
+
 				<button type="submit"
 					class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
 					Sign up</button>
-					
-					<p onclick="history.back();"
+
+				<p onclick="history.back();"
 					class="flex justify-between inline-block mt-4 text-xs text-gray-500 cursor-pointer hover:text-black">돌아가기</p>
 
 			</form>

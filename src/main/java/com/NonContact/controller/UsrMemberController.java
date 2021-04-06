@@ -64,19 +64,19 @@ public class UsrMemberController {
 		if (authKey == null) {
 			return new ResultData("F-1", "authKey를 입력해주세요.");
 		}
-		Member searchForLoginId = memberService.getMemberByAuthKey(authKey);
+		Member searchForLoginId = memberService.getForPrintMemberByAuthkey(authKey);
 
 		return new ResultData("S-1", String.format("유효한 회원입니다."), "member", searchForLoginId);
 	}
 
-	@GetMapping("/usr/member/authKey")
+	@PostMapping("/usr/member/authKey")
 	@ResponseBody
 	public ResultData showAuthKey(String loginId, String loginPw) {
 		if (loginId == null) {
 			return new ResultData("F-1", "loginId를 입력해주세요.");
 		}
 
-		Member searchForLoginId = memberService.getMemberByLoginId(loginId);
+		Member searchForLoginId = memberService.getForPrintMemberByLoginId(loginId);
 
 		if (searchForLoginId == null) {
 			return new ResultData("F-3", "가입되지 않은 아이디입니다.", "loginId", loginId);
@@ -90,8 +90,7 @@ public class UsrMemberController {
 		}
 
 		return new ResultData("S-1", String.format("%s님 환영합니다.", searchForLoginId.getNickname()), "authKey",
-				searchForLoginId.getAuthKey(), "id", searchForLoginId.getId(), "name", searchForLoginId.getName(),
-				"nickname", searchForLoginId.getNickname());
+				searchForLoginId.getAuthKey(), "member", searchForLoginId);
 	}
 
 	@GetMapping("/usr/member/login")

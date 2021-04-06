@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.NonContact.dao.MemberDao;
+import com.NonContact.dto.GenFile;
 import com.NonContact.dto.Member;
 import com.NonContact.dto.ResultData;
 import com.NonContact.util.Util;
@@ -15,6 +16,8 @@ import com.NonContact.util.Util;
 public class MemberService {
 	@Autowired
 	private MemberDao memberDao;
+	@Autowired
+	private GenFileService genFileService;
 
 	// static 시작
 
@@ -46,6 +49,8 @@ public class MemberService {
 		memberDao.join(param);
 
 		int id = Util.getAsInt(param.get("id"), 0);
+
+		genFileService.changeInputFileRelIds(param, id);
 
 		return new ResultData("S-2", String.format("%s님 환영합니다.", param.get("nickname")), "id", id);
 	}
@@ -99,7 +104,7 @@ public class MemberService {
 
 	public ResultData deleteMember(int id) {
 
-	 	memberDao.deleteMember(id);
+		memberDao.deleteMember(id);
 
 		return new ResultData("S-1", "삭제되었습니다.", "id", id);
 	}
@@ -113,11 +118,32 @@ public class MemberService {
 		if (member.getId() == loginedMember.getId()) {
 			return new ResultData("S-1", "사용 권한이 확인 되었습니다.");
 		}
-		
+
 		if (isAdmin(loginedMember)) {
 			return new ResultData("S-1", "사용 권한이 확인 되었습니다.");
 		}
 		return new ResultData("F-6", "사용 권한이 없습니다.");
+	}
+
+	public Member getForPrintMemberByAuthkey(String authKey) {
+		Member member = memberDao.getMemberByAuthKey(authKey);
+		updateForPrint(member);
+		return member;
+	}
+
+	private void updateForPrint(Member member) {
+		GenFile genFile = genFileService.getGenFile("member", member.getId(), "common", "attachment", 1);
+
+		if (genFile != null) {
+			String imgUrl = genFile.getForPrintUrl();
+			member.setExtra__thumbImg(imgUrl);
+		}		
+	}
+
+	public Member getForPrintMemberByLoginId(String loginId) {
+		Member member = memberDao.getMemberByLoginId(loginId);
+		updateForPrint(member);
+		return member;
 	}
 
 }

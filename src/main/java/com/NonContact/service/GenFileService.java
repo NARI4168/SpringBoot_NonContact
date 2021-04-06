@@ -217,5 +217,18 @@ public class GenFileService {
 
 		return rs;
 	}
+	
+	public void changeInputFileRelIds(Map<String, Object> param, int id) {
+		
+		String genFileIdsStr = Util.ifEmpty((String)param.get("genFileIdsStr"), null);
+
+		if ( genFileIdsStr != null ) {
+			List<Integer> genFileIds = Util.getListDividedBy(genFileIdsStr, ",");
+
+			for (int genFileId : genFileIds) {
+				changeRelId(genFileId, id);
+			}
+		}
+	}
 
 }
