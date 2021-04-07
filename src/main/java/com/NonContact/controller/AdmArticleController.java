@@ -77,19 +77,20 @@ public class AdmArticleController extends BaseController {
 			searchKeywordType = null;
 		}
 
+		int totalItemsCount = articleService.getArticlesTotalCount(boardId, searchKeywordType, searchKeyword);
+		
 		int itemsInAPage = 3;
+		
+		int totalPage = (int)Math.ceil(totalItemsCount / (double)itemsInAPage);
 
 		List<Article> articles = articleService.getForPrintArticles(boardId, searchKeywordType, searchKeyword, page,
 				itemsInAPage);
 
-	/*	for (Article article : articles) {
-			GenFile genFile = genFileService.getGenFile("article", article.getId(), "common", "attachment", 1);
-
-			if (genFile != null) {
-				article.setExtra__thumbImg(genFile.getForPrintUrl());
-			}
-		}*/
+		req.setAttribute("totalItemsCount", totalItemsCount);
 		req.setAttribute("articles", articles);
+		req.setAttribute("page", page);
+		req.setAttribute("totalPage", totalPage);
+		
 		return ("adm/article/list");
 	}
 

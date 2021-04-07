@@ -122,4 +122,9 @@ public class ArticleService {
 		return new ResultData("S-1", "추가되었습니다.", "id", id);
 
 	}
+
+	public int getArticlesTotalCount(int boardId, String searchKeywordType, String searchKeyword) {
+		
+		return articleDao.getArticlesTotalCount(boardId, searchKeywordType, searchKeyword);
+	}
 }

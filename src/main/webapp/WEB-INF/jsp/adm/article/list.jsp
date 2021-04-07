@@ -1,3 +1,4 @@
+<%@ page import="com.NonContact.util.Util"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -6,7 +7,7 @@
 
 <section class="section-1">
 	<div class="bg-white shadow-md rounded container mx-auto p-8 mt-8">
-	
+
 
 
 		<div>
@@ -26,9 +27,12 @@
 
 			<a href="add?"
 				class="btn-primary bg-gray-600 rounded hover:bg-gray-400 text-white font-bold py-2.5 px-5">글쓰기</a>
+				
+		
 		</div>
+		
 
-
+		<div class="mt-2 px-2 text-sm">총 게시물 수 : ${Util.numberFormat(totalItemsCount)}</div>
 
 		<c:forEach items="${articles}" var="article">
 			<c:set var="detailUrl" value="detail?id=${article.id}" />
@@ -37,7 +41,7 @@
 				value="${article.extra.file__common__attachment[thumbFileNo]}" />
 			<c:set var="thumbUrl" value="${thumbFile.getForPrintUrl()}" />
 
-			<div class="flex items-center mt-10 space-x-4 > *">
+			<div class="flex items-center mt-8 space-x-4 > *">
 				<span class="font-light text-gray-600">${article.regDate}</span>
 
 				<div class="flex-grow"></div>
@@ -65,65 +69,65 @@
 								src="${thumbUrl}" width="50" height="50" alt="" /></a>
 						</c:if>
 					</div>
-						
 
-				<div class="flex items-center mt-4">
-					<a href="detail?id=${article.id}"
-						class="text-blue-500 hover:underline">자세히 보기</a> <a
-						href="modify?id=${article.id}"
-						class="ml-2 text-blue-500 hover:underline">수정</a> <a
-						onclick="if ( !confirm('삭제하시겠습니까?') ) return false;"
-						href="doDelete?id=${article.id}"
-						class="ml-2 text-blue-500 hover:underline">삭제</a>
-					<div class="flex-grow"></div>
 
-					<div>
-						<a href="#" class="flex items-center"> <img
-							src="https://mblogthumb-phinf.pstatic.net/MjAxODAxMTlfMjkg/MDAxNTE2MzQ5ODAyNzY5.JnY2p-t9mGEly1Y6F1Fvvm2udGo5aP_9fHRjDv_v5ikg.o1B5rIWM4SwMD0Oa2BuChU7Cl704DxIBdlLYfAEF4Hwg.JPEG.92_song/%25EC%2599%25B8%25EA%25B5%25AD%25EC%259D%25B8%25EB%25AC%25BC%25EA%25B0%2590%25EC%2584%25B1%25EC%2582%25AC%25EC%25A7%2584_(12).jpg?type=w800"
-							alt="avatar" class="mx-4 w-10 h-10 object-cover rounded-full">
-							<h1 class="text-gray-700 font-bold hover:underline">${article.writer}</h1>
-						</a>
+					<div class="flex items-center mt-4">
+						<a href="detail?id=${article.id}"
+							class="text-blue-500 hover:underline">자세히 보기</a> <a
+							href="modify?id=${article.id}"
+							class="ml-2 text-blue-500 hover:underline">수정</a> <a
+							onclick="if ( !confirm('삭제하시겠습니까?') ) return false;"
+							href="doDelete?id=${article.id}"
+							class="ml-2 text-blue-500 hover:underline">삭제</a>
+						<div class="flex-grow"></div>
 
+						<div>
+							<a href="#" class="flex items-center"> <img
+								src="https://mblogthumb-phinf.pstatic.net/MjAxODAxMTlfMjkg/MDAxNTE2MzQ5ODAyNzY5.JnY2p-t9mGEly1Y6F1Fvvm2udGo5aP_9fHRjDv_v5ikg.o1B5rIWM4SwMD0Oa2BuChU7Cl704DxIBdlLYfAEF4Hwg.JPEG.92_song/%25EC%2599%25B8%25EA%25B5%25AD%25EC%259D%25B8%25EB%25AC%25BC%25EA%25B0%2590%25EC%2584%25B1%25EC%2582%25AC%25EC%25A7%2584_(12).jpg?type=w800"
+								alt="avatar" class="mx-4 w-10 h-10 object-cover rounded-full">
+								<h1 class="text-gray-700 font-bold hover:underline">${article.writer}</h1>
+							</a>
+
+						</div>
 					</div>
 				</div>
-				</div>
-				</div>
+			</div>
 		</c:forEach>
-	</div>
 	
+		
+		<nav class="flex justify-center rounded-md shadow-sm mt-10" aria-label="Pagination">
+			<a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+				<span class="sr-only">Previous</span>
+
+				<svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+					<path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+				</svg>
+			</a>
+
+
+			<c:forEach var="i" begin="1" end="${totalPage}">
+				<c:set var="aClassStr" value="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium" />
+				<c:if test="${i == page}">
+					<c:set var="aClassStr" value="${aClassStr} text-red-700 hover:bg-red-50" />
+				</c:if>
+				<c:if test="${i != page}">
+					<c:set var="aClassStr" value="${aClassStr} text-gray-700 hover:bg-gray-50" />
+				</c:if>
+				<a href="?page=${i}" class="${aClassStr}">${i}</a>
+			</c:forEach>
+
+			<a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+
+				<span class="sr-only">Next</span>
+
+				<svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"> 
+					<path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+          		</svg>
+			</a>
+		</nav>
+	</div>
+
 
 </section>
-<!-- 
-<section class="page">
-	<div class="bg-white shadow-md rounded container mx-auto p-5 mt-8">
 
-
-		<div class="flex justify-center items-center">
-
-			<c:set var="pageSize" value="5" />
-
-
-			<c:set var="from" value="1" />
-			<c:set var="end" value="${pageSize}" />
-
-
-			<a class="hover:underline" href="#"> ≪ </a> &nbsp;&nbsp;
-
-
-
-			<c:forEach var="i" begin="${from}" end="${end}" step="1">
-
-				<a class="hover:underline" href="list?page=${i}">${i}</a> &nbsp;&nbsp;
-						
-		</c:forEach>
-
-
-
-			<a class="hover:underline" href="#">≫</a>
-
-		</div>
-
-
-	</div>
-</section>-->
 <%@ include file="../part/mainLayoutFoot.jspf"%>

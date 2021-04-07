@@ -31,6 +31,8 @@ public interface ArticleDao {
 
 	void addReply(Map<String, Object> param);
 
+	int getArticlesTotalCount(@Param("boardId") int boardId,@Param("searchKeywordType") String searchKeywordType,@Param("searchKeyword") String searchKeyword);
+
 
 
 }
