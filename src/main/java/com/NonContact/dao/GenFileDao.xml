@@ -123,11 +123,13 @@
 		SELECT *
 		FROM genFile
 		WHERE 1
-		AND relId IN
-		<foreach item="relId" index="index" collection="relIds"
-			open="(" separator="," close=")">
-			#{relId}
-		</foreach>
+		<if test="relIds != null and relIds.size > 0">
+			AND relId IN
+			<foreach item="relId" index="index" collection="relIds"
+				open="(" separator="," close=")">
+				#{relId}
+			</foreach>
+		</if>
 		AND relTypeCode = #{relTypeCode}
 		AND typeCode = #{typeCode}
 		AND
