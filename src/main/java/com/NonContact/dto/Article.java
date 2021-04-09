@@ -1,8 +1,5 @@
 package com.NonContact.dto;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data //toString, GettersSetters
 @NoArgsConstructor //인자없는 생성자
 @AllArgsConstructor //생성자
-public class Article {
+public class Article extends EntityDto{
 	private int id;
 	private String regDate;
 	private String updateDate;
@@ -24,14 +21,8 @@ public class Article {
 	private String extra__boardName;
 	private String extra__thumbImg;
 	
-	private Map<String, Object> extra;
-
-	public Map<String, Object> getExtraNotNull() {
-		if ( extra == null ) {
-			extra = new HashMap<String, Object>();
-		}
-
-		return extra;
+	public String getWriterThumbImgUrl() {
+		return "/common/genFile/file/member/" + memberId + "/common/attachment/1";
 	}
 
 }

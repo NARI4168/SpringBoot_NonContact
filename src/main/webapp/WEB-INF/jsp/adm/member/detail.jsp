@@ -11,19 +11,14 @@
 		<div class="flex flex-col items-center justify-center">
 
 			<div class="place-items-center">
-
-				<a href="#"><img class="rounded-full object-cover"
-					src="https://img.hankyung.com/photo/201903/AA.19067065.1.jpg"
-					width="150" height="150" alt="" /> </a>
+			<img
+				class="rounded-full object-cover"
+				alt="User avatar" width="150" height="150" src="${member.memberThumbImgUrl}"/>
+	
 			</div>
 
 
 			<table class="mt-8 text-xl">
-
-				<tr>
-					<th scope="row">Profile</th>
-					<td>이미지</td>
-				</tr>
 
 				<tr>
 					<th scope="row">회원등급</th>
@@ -78,10 +73,9 @@
 				class="ml-2 text-blue-500 hover:underline">수정</a> <a
 				onclick="if ( !confirm('삭제하시겠습니까?') ) return false;"
 				href="doDelete?id=${member.id}"
-				class="ml-2 text-blue-500 hover:underline">삭제</a>				
-				<a onclick="history.back();"
-							class="ml-2 text-blue-500 hover:underline cursor-pointer"
-						>뒤로가기</a>
+				class="ml-2 text-blue-500 hover:underline">삭제</a> <a
+				onclick="history.back();"
+				class="ml-2 text-blue-500 hover:underline cursor-pointer">뒤로가기</a>
 
 		</div>
 

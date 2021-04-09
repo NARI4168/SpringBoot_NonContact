@@ -173,9 +173,8 @@ public class Util {
 
 		return data;
 	}
-	
-	
-	//파일 DB 위한 유틸
+
+	// 파일 DB 위한 유틸
 	public static String getFileExtTypeCodeFromFileName(String fileName) {
 		String ext = getFileExtFromFileName(fileName).toLowerCase();
 
@@ -234,11 +233,12 @@ public class Util {
 
 		return dateStr;
 	}
-	
+
 	public static List<Integer> getListDividedBy(String str, String divideBy) {
-		return Arrays.asList(str.split(divideBy)).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+		return Arrays.asList(str.split(divideBy)).stream().map(s -> Integer.parseInt(s.trim()))
+				.collect(Collectors.toList());
 	}
-	
+
 	public static boolean delteFile(String filePath) {
 		java.io.File ioFile = new java.io.File(filePath);
 		if (ioFile.exists()) {
@@ -247,7 +247,7 @@ public class Util {
 
 		return true;
 	}
-	
+
 	public static String numberFormat(int num) {
 		DecimalFormat df = new DecimalFormat("###,###,###");
 
@@ -257,18 +257,18 @@ public class Util {
 	public static String numberFormat(String numStr) {
 		return numberFormat(Integer.parseInt(numStr));
 	}
-	
+
 	public static boolean allNumberString(String str) {
-		if ( str == null ) {
+		if (str == null) {
 			return false;
 		}
 
-		if ( str.length() == 0 ) {
+		if (str.length() == 0) {
 			return true;
 		}
 
-		for ( int i = 0; i < str.length(); i++ ) {
-			if ( Character.isDigit(str.charAt(i)) == false ) {
+		for (int i = 0; i < str.length(); i++) {
+			if (Character.isDigit(str.charAt(i)) == false) {
 				return false;
 			}
 		}
@@ -277,11 +277,11 @@ public class Util {
 	}
 
 	public static boolean startsWithNumberString(String str) {
-		if ( str == null ) {
+		if (str == null) {
 			return false;
 		}
 
-		if ( str.length() == 0 ) {
+		if (str.length() == 0) {
 			return false;
 		}
 
@@ -289,11 +289,11 @@ public class Util {
 	}
 
 	public static boolean isStandardLoginIdString(String str) {
-		if ( str == null ) {
+		if (str == null) {
 			return false;
 		}
 
-		if ( str.length() == 0 ) {
+		if (str.length() == 0) {
 			return false;
 		}
 
@@ -302,5 +302,49 @@ public class Util {
 		// 숫자로 시작 금지
 		// _, 알파벳, 숫자로만 구성
 		return Pattern.matches("^[a-zA-Z]{1}[a-zA-Z0-9_]{4,19}$", str);
+	}
+
+	public static String getNewUrlRemoved(String uri, String paramName) {
+		String deleteStrStarts = paramName + "=";
+		int delStartPos = uri.indexOf(deleteStrStarts);
+
+		if (delStartPos != -1) {
+			int delEndPos = uri.indexOf("&", delStartPos);
+
+			if (delEndPos != -1) {
+				delEndPos++;
+				uri = uri.substring(0, delStartPos) + uri.substring(delEndPos, uri.length());
+			} else {
+				uri = uri.substring(0, delStartPos);
+			}
+		}
+
+		if (uri.charAt(uri.length() - 1) == '?') {
+			uri = uri.substring(0, uri.length() - 1);
+		}
+
+		if (uri.charAt(uri.length() - 1) == '&') {
+			uri = uri.substring(0, uri.length() - 1);
+		}
+
+		return uri;
+	}
+
+	public static String getNewUrl(String uri, String paramName, String paramValue) {
+		uri = getNewUrlRemoved(uri, paramName);
+
+		if (uri.contains("?")) {
+			uri += "&" + paramName + "=" + paramValue;
+		} else {
+			uri += "?" + paramName + "=" + paramValue;
+		}
+
+		uri = uri.replace("?&", "?");
+
+		return uri;
+	}
+
+	public static String getNewUriAndEncoded(String uri, String paramName, String pramValue) {
+		return getUrlEncoded(getNewUrl(uri, paramName, pramValue));
 	}
 }

@@ -1,5 +1,6 @@
 package com.NonContact.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.NonContact.dto.GenFile;
 import com.NonContact.dto.Member;
 import com.NonContact.dto.ResultData;
+import com.NonContact.service.GenFileService;
 import com.NonContact.service.MemberService;
 import com.NonContact.util.Util;
 
@@ -22,6 +25,8 @@ import com.NonContact.util.Util;
 public class AdmMemberController extends BaseController {
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private GenFileService genFileService;
 	
 	@GetMapping("/adm/member/getLoginIdDup")
 	@ResponseBody
@@ -102,7 +107,7 @@ public class AdmMemberController extends BaseController {
 			searchKeywordType = null;
 		}
 
-		int itemsInAPage = 3;
+		int itemsInAPage = 10;
 
 		List<Member> members = memberService.getForPrintMembers(authLevel, searchKeywordType, searchKeyword, page,
 				itemsInAPage, param);
@@ -217,6 +222,15 @@ public class AdmMemberController extends BaseController {
 		}
 
 		Member member = memberService.getForPrintMember(id);
+		
+		List<GenFile> files = genFileService.getGenFiles("member", member.getId(), "common", "attachment");
+		Map<String, GenFile> filesMap = new HashMap<>();
+
+		for (GenFile file : files) {
+			filesMap.put(file.getFileNo() + "", file);
+		}
+
+		member.getExtraNotNull().put("file__common__attachment", filesMap);
 
 		req.setAttribute("member", member);
 

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Member {
+public class Member extends EntityDto{
 	private int id;
 	private String regDate;
 	private String updateDate;
@@ -34,5 +34,9 @@ public class Member {
 	
 	public String getAuthLevelNameColor() {
 		return MemberService.getAuthLevelNameColor(this);
+	}
+	
+	public String getMemberThumbImgUrl() {
+		return "/common/genFile/file/member/" + id + "/common/attachment/1";
 	}
 }

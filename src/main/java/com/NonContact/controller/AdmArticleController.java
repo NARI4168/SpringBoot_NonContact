@@ -38,13 +38,25 @@ public class AdmArticleController extends BaseController {
 			return msgAndBack(req, "해당 게시물이 존재하지 않습니다.");
 		}
 
-		GenFile genFile = genFileService.getGenFile("article", article.getId(), "common", "attachment", 1);
+		List<GenFile> files  = genFileService.getGenFiles("article", article.getId(), "common", "attachment");
+		
+		Map<String, GenFile> filesMap = new HashMap<>();
+		
+		for (GenFile file : files) {
+			filesMap.put(file.getFileNo() + "", file);
+		}
 
-		if (genFile != null) {
+		article.getExtraNotNull().put("file__common__attachment", filesMap);
+		req.setAttribute("article", article);
+		if (article == null) {
+			return msgAndBack(req, "존재하지 않는 게시물번호 입니다.");
+		}
+	
+		/*if (genFile != null) {
 			article.setExtra__thumbImg(genFile.getForPrintUrl());
 		}
 
-		req.setAttribute("article", article);
+		req.setAttribute("article", article);*/
 
 		return ("adm/article/detail");
 	}
