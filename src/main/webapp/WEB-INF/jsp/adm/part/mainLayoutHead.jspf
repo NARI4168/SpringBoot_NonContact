@@ -28,6 +28,11 @@
 					</div>
 				</li>
 				
+				<li><a
+					class="text-xl px-4 flex items-center h-full hover:underline"
+					href="/adm/board/list"> <span>게시판 관리</span>
+				</a></li>
+				
 				<li class="dropdown"><a
 					class="text-xl px-4 flex items-center h-full hover:underline dropbtn"
 					href="/adm/article/list"> <span>게시물 관리</span>
