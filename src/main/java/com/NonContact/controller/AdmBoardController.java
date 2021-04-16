@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.NonContact.dto.Board;
+import com.NonContact.dto.Member;
 import com.NonContact.service.BoardService;
 import com.NonContact.util.Util;
 
@@ -45,15 +46,13 @@ public class AdmBoardController extends BaseController {
 	}
 
 	@RequestMapping("/adm/board/modify")
-	public String modify(HttpServletRequest req) {
+	public String modify(HttpServletRequest req, @RequestParam Map<String, Object> param) {
 
-		String selectedId = req.getParameter("selectedId");
-		int id = Integer.parseInt(selectedId);
-
-		Board board = boardService.getForPrintBoard(id);
-
+		String id = (String) param.get("id");
+		Board board= boardService.getBoard(id);
+		boardService.getForPrintBoard(id);
 		req.setAttribute("board", board);
-
+	
 		return "adm/board/modify";
 	}
 
@@ -61,8 +60,10 @@ public class AdmBoardController extends BaseController {
 	@ResponseBody
 	public String doModify(@RequestParam Map<String, Object> param, HttpServletRequest req) {
 
+	
+		Board board= (Board) req.getAttribute("board");
 		int id = Util.getAsInt(param.get("id"), 0);
-		Board board = boardService.getBoard(id);
+	
 		boardService.modifyBoard(param);
 
 		String msg = String.format("%d번 게시판이 수정되었습니다.", id);

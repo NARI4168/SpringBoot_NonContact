@@ -15,9 +15,9 @@ public interface BoardDao {
 
 	public void deleteBoard(@Param("id") String id);
 
-	Board getForPrintBoard(@Param("id") int id);
+	Board getForPrintBoard(@Param("id") String id);
 
-	Board getBoard(@Param("id") int id);
+	Board getBoard(@Param("id") String id);
 
 	void modifyBoard(Map<String, Object> param);
 }

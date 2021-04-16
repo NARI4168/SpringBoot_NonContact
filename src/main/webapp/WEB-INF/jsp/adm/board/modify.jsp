@@ -4,8 +4,7 @@
 <%@ page import="com.NonContact.util.Util"%>
 
 <%@ include file="../part/mainLayoutHead.jspf"%>
-
-
+<
 <script>
 	BoardModify__submited = false;
 	function BoardModify__checkAndSubmit(form) {
@@ -31,6 +30,7 @@
 		}
 
 		BoardModify__submited = true;
+		form.submit();
 	
 	}
 </script>
@@ -40,26 +40,26 @@
 
 		<form action="doModify" method="POST"
 			onsubmit="BoardModify__checkAndSubmit(this); return false;">
-		<input
-				type="hidden" name="id" value="${board.id}" /> 
+		<input	type="hidden" name="id" value="${board.id}" /> 
 				
 			<div class="form-row flex flex-col lg:flex-row">
 				<div class="lg:flex lg:items-center lg:w-28">
 					<span>게시판 코드</span>
 				</div>
-				<div class="lg:flex-grow">
+				<div class="lg:flex-grow boder-3">
 					<input value="${board.code}" type="text" name="code"
-						autofocus="autofocus" class="form-row-input w-full rounded-sm" />
+						autofocus="autofocus" class="form-row-input w-full rounded-sm border-2" />
 				</div>
 			</div>
+			
 
 			<div class="form-row flex flex-col lg:flex-row">
 				<div class="lg:flex lg:items-center lg:w-28">
 					<span>게시판 이름</span>
 				</div>
 				<div class="lg:flex-grow">
-					<textarea name="name" class="form-row-input w-full rounded-sm"
-						placeholder="내용을 입력해주세요.">${board.name}</textarea>
+					<textarea name="name" class="form-row-input w-full rounded-sm border-2"
+						>${board.name}</textarea>
 				</div>
 			</div>
 		

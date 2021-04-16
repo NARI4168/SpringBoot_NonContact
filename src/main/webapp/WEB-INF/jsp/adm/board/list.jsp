@@ -39,7 +39,6 @@ function deleteValue(){
 	
 }
 
-/**
 function modifyValue(){
 	var url = "/adm/board/modify";
 	var valueArr = new Array();
@@ -52,7 +51,6 @@ function modifyValue(){
 	if(valueArr.length == 0){
 		alert("선택된 게시판이 없습니다.")
 	}else{
-	}
 		var chk = confirm("해당 게시판을 수정하시겠습니까?");
 		$.ajax({
 			url : url,
@@ -61,13 +59,17 @@ function modifyValue(){
 			data : {
 				valueArr : valueArr
 			},
-			success : onSuccess
+			success : function(jdata){
+				if(jdata=1){
+					location.href="/adm/board/modify?id="+valueArr;
+					
+				}else {
+					alert("삭제실패");
+				}
+			}
 		});
 	}
-	
 }
-
-**/
 
 
 </script>

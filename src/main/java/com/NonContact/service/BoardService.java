@@ -30,11 +30,11 @@ public class BoardService {
 		boardDao.deleteBoard(id);
 	}
 
-	public Board getForPrintBoard(int id) {
+	public Board getForPrintBoard(String id) {
 		return boardDao.getForPrintBoard(id);
 	}
 
-	public Board getBoard(int id) {
+	public Board getBoard(String id) {
 		return boardDao.getBoard(id);
 	}
 
